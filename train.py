@@ -1,22 +1,17 @@
 import random
 from deap import creator, base, tools, algorithms
+import simple as simulationcase
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 
-toolbox.register("attr_param", random.randrange, -100., 100.)
+toolbox.register("attr_param", random.uniform, -100., 100.)
 toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_param, n=5)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
-def evalIndividual(individual):
-    return -1; #implement simulation
-
-def evalOneMax(individual):
-    return sum(individual),
-
-toolbox.register("evaluate", evalIndividual)
+toolbox.register("evaluate", simulationcase.evalData)
 toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
 toolbox.register("select", tools.selTournament, tournsize=3)
