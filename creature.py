@@ -4,8 +4,8 @@ import numpy as np
 
 class Creature:
     maxVelocity = 1.388888
-    force = np.array([0,0])
-    velocity = np.array([1,1])
+    force = np.zeros(2)
+    velocity = np.zeros(2)
 
     #PRE: location = np.array([x,y]), goal = np.array([goalX,goalY])
     def __init__(self, location, goal, desiredVelocity = 1.333, tau = 5):
@@ -17,13 +17,22 @@ class Creature:
     def desiredDirection(self):
         return normalize(self.goal-self.location)
 
+    def updateForce(self,socialForce,creatureB,dt):
+        self.force = socialForce(self,creatureB,dt)
 
-    def update(self, timestep):
-        self.velocity = self.velocity + self.force * timestep
+    def updateVelocity(self,dt):
+        self.velocity = self.velocity + self.force * dt
         if np.linalg.norm(self.velocity) > self.maxVelocity:
             unitVec = normalize(self.velocity)
             self.velocity = unitVec * self.maxVelocity
-        self.location = self.location + self.velocity * timestep
+
+    def updateLocation(self,dt):
+        self.location = self.location + self.velocity*dt
+
+    def update(self,socialForce,creatureB,dt):
+        self.updateForce(socialForce,creatureB,dt)
+        self.updateVelocity(dt)
+        self.updateLocation(dt)
 
 def normalize(v):
     norm = np.linalg.norm(v)

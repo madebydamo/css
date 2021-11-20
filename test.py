@@ -2,11 +2,11 @@ import simple
 import creature
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 
-#locations = np.array([[5,5],[5.5,5.5]])  #agentDistanceForce > accelerationForce
-locations = np.array([[3.8,3.8],[6.2,6.2]])
+#locations = np.array([[6,6],[5,5]])  #agentDistanceForce > accelerationForce
+#locations = np.array([[3.8,5.0],[6.2,5.0]])
 #locations = np.array([[1,9],[9,1]])
+locations = np.array([[5,5.1],[6,6]])
 goals = np.array([[9,9],[1,1]])
 
 a = creature.Creature(locations[0],goals[0])
@@ -16,19 +16,41 @@ b = creature.Creature(locations[1],goals[1])
 print(simple.accelerationForce(a))
 
 def quiver(a,b,color):
-    fa = simple.socialForce(a, b, 1/30)
-    fab = simple.agentDistanceForce(a,b,1/30)
+    fa = simple.socialForce(a, b, 0.2)
+    fab = simple.agentDistanceForce(a,b,0.2)
     acc = simple.accelerationForce(a)
-    
-    ax[1].quiver(a.location[0],a.location[1],fab[0],fab[1],color='darkviolet',alpha=0.5,label=(r'$f_{\alpha \beta} = $' +str(round(np.linalg.norm(fab),3))),scale=10)
-    ax[1].quiver(a.location[0],a.location[1],acc[0],acc[1],color='orange',alpha=0.5,label=r'$a_\alpha = $' +str(round(np.linalg.norm(acc),3)),scale=10)
+
+    ax[1].quiver(a.location[0],a.location[1],fab[0],fab[1],color='darkviolet',alpha=0.5,label=(r'$f_{\alpha \beta} = $' +str(round(np.linalg.norm(fab),3))),scale=1)
+    ax[1].quiver(a.location[0],a.location[1],acc[0],acc[1],color='orange',alpha=0.5,label=r'$a_\alpha = $' +str(round(np.linalg.norm(acc),3)),scale=1)
     ax[1].legend(loc='best')
-    ax[0].quiver(a.location[0],a.location[1],fa[0],fa[1],color=color,alpha=0.5,scale=10)
+    ax[0].quiver(a.location[0],a.location[1],fa[0],fa[1],color=color,alpha=0.5,scale=1)
     ax[0].plot(a.location[0],a.location[1],marker='.',color=color)
     ax[0].plot(a.goal[0],a.goal[1],color=color,marker='X')
     return
 
-fig, ax = plt.subplots(ncols=2,sharex=True, sharey=True)
-quiver(a,b,'blue')
-quiver(b,a,'red')
-plt.show()
+def plotVectors(a,b):
+    fig, ax = plt.subplots(ncols=2,sharex=True, sharey=True)
+    quiver(a,b,'blue')
+    quiver(b,a,'red')
+    plt.show()
+
+def plotTrajectories(a,b,dt=0.2,n=20):
+    locations = np.zeros((2,n+1,2))
+    locations[0,0,...] = a.location
+    locations[1,0,...] = b.location
+
+    for i in range(n):
+        a.update(simple.socialForce, b, dt)
+        b.update(simple.socialForce, a, dt)
+        locations[0,i+1] = a.location
+        locations[1,i+1] = b.location
+
+    plt.figure()
+    plt.plot(locations[0,:,0],locations[0,:,1],label='a',color='blue')
+    plt.plot(locations[1,:,0],locations[1,:,1],label='b',color='red')
+    plt.plot(a.goal[0],a.goal[1],marker='X',color='blue')
+    plt.plot(b.goal[0],b.goal[1],marker='X',color='red')
+    plt.legend()
+    plt.show()
+
+plotTrajectories(a,b,n=200)
