@@ -1,9 +1,8 @@
 #import simulation
 import creature
 import math
-
-v0 = 2.1
-sigma = 0.3
+import numpy as np
+from numpy.linalg import norm
 
 
 def evalData(individual):
@@ -13,22 +12,19 @@ def evalData(individual):
     #return simulation.simulate(socialForce, objectForce, 1/30, 20)
     return 0
 
-def socialForce(creatureA, creatureB, dTime):
-    distanceX = (creatureA.x - creatureB.x)
-    distanceY = (creatureA.y - creatureB.y)
-    distanceBetween = math.sqrt(distanceX**2 + distanceY**2)
-    gradX = distanceBetween / distanceX
-    gradY = distanceBetween / distanceY
-    veldifx = (creatureA.velX - creatureB.velX) * dTime
-    veldify = (creatureA.velY - creatureB.velY) * dTime
-    b = 0.5 * math.sqrt(distanceBetween + creature.norm(distanceX - veldifx, distanceY - veldify) - creature.norm(veldifx, veldify))
-    v = v0 * math.exp(-b / sigma)
-    return (-gradX * v, -gradY * v)
+def socialForce(creatureA,creatureB, dt):
+    return accelerationForce(creatureA) + agentDistanceForce(creatureA,creatureB,dt)    
 
+# f_{alpha beta}, the force between two agents
+def agentDistanceForce(creatureA, creatureB, dt, A=1 ,B=1): 
+    va,vb = creatureA.velocity, creatureB.velocity
+    distance = creatureA.location - creatureB.location
+    distanceByVelocity = (vb - va)*dt 
+    b = np.sqrt(norm(distance) + norm(distance - (vb-va)*dt)**2 - norm((vb-va)*dt)**2)/2
+    return A * np.exp(-b/B) * (norm(distance)+norm(distance-distanceByVelocity))/(2*b) * 0.5*(distance/norm(distance) + (distance-distanceByVelocity)/norm(distance-distanceByVelocity))
+
+# acceleration to desired velocity
 def accelerationForce(creature):
-    (dirX, dirY) = creature.desiredDirection()
-    desVelX = dirX * creature.desiredSpeed
-    desVelY = dirY * creature.desiredSpeed
-    difVelX = (desVelX - creature.velX) / creature.tau
-    difVelY = (desVelY - creature.velY) / creature.tau
-    return (difVelX, difVelY)
+    desiredDirection = creature.desiredDirection()
+    desiredVelocity = creature.desiredVelocity * desiredDirection
+    return 1/creature.tau * (desiredVelocity - creature.velocity)
