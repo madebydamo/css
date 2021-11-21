@@ -1,10 +1,13 @@
 import math
 import simple
 import creature
+import NumPy as np
+import time
 
 # socialForce and objectForce are lambdas with distance as an input
 def simulate(socialForce, objectForce, timestep, duration):
     # simulated field is 800x800"""
+    savearray = []
     creatures = []
     # initialization creatures
     creatures.append(creature.Creature(400, 0, 400, 800))
@@ -19,11 +22,16 @@ def simulate(socialForce, objectForce, timestep, duration):
     # finish initialization
 
     for i in range(0, duration / timestep):
-        
+        for c in creatures:
+            for other in creatures:
+                if(c != other):
+                    c.update(socialForce, other, timestep)
+        savearray[i] = creatures.copy()
+    byteoutput = np.array(savearray).tobytes()
+    with open(f'/tmp/${time.time()}') as f:
+        f.write(byteoutput)
         # TODO do the actual simulation with social both functions
 
-    for c in creatures:
-        distance += c.distance()
-    return distance
+    return 0
 
 
