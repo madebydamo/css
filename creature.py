@@ -1,6 +1,7 @@
 import math
 import numpy as np
 
+# run with python3 -m pipenv run python3 ui.py
 
 class Creature:
     maxVelocity = 1.388888

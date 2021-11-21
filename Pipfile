@@ -5,7 +5,9 @@ name = "pypi"
 
 [packages]
 deap = "*"
-mathplot = "*"
+matplotlib = "*"
+raylib = "*"
+numpy = "*"
 
 [dev-packages]
 
