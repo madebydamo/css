@@ -7,6 +7,7 @@ class Creature:
     maxVelocity = 1.388888
     force = np.zeros(2)
     velocity = np.zeros(2)
+    nextLocation = np.zeros(2)
 
     #PRE: location = np.array([x,y]), goal = np.array([goalX,goalY])
     def __init__(self, location, goal, desiredVelocity = 1.333, tau = 0.5):
@@ -27,13 +28,16 @@ class Creature:
             unitVec = normalize(self.velocity)
             self.velocity = unitVec * self.maxVelocity
 
-    def updateLocation(self,dt):
-        self.location = self.location + self.velocity*dt
+    def calculateLocation(self,dt):
+        self.nextLocation = self.location + self.velocity*dt
+
+    def updateLocation(self):
+        self.location = self.nextLocation
 
     def update(self,socialForce,creatureB,dt):
         self.updateForce(socialForce,creatureB,dt)
         self.updateVelocity(dt)
-        self.updateLocation(dt)
+        self.calculateLocation(dt)
     def __str__(self):
         return f"loc:{self.location}, force:{self.force}"
 

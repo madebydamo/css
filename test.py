@@ -6,14 +6,16 @@ import matplotlib.pyplot as plt
 #locations = np.array([[6,6],[5,5]])  #agentDistanceForce > accelerationForce
 #locations = np.array([[3.8,5.0],[6.2,5.0]])
 #locations = np.array([[1,9],[9,1]])
-locations = np.array([[1.1,1],[9,9]])
-goals = np.array([[9,9],[1,1]])
+locations = np.array([[1,1],[9,9],[1,9]])
+goals = np.array([[9,9],[1,1],[9,1]])
 
-a = creature.Creature(locations[0],goals[0])
-b = creature.Creature(locations[1],goals[1])
+# creatureA = creature.Creature(locations[0],goals[0])
+# creatureB = creature.Creature(locations[1],goals[1])
 
+creatures = []
+for i in range(3):
+    creatures.append(creature.Creature(locations[i],goals[i]))
 
-print(simple.accelerationForce(a))
 
 def quiver(a,b,color):
     fa = simple.socialForce(a, b, 0.2)
@@ -34,23 +36,35 @@ def plotVectors(a,b):
     quiver(b,a,'red')
     plt.show()
 
-def plotTrajectories(a,b,dt=0.01,n=20):
-    locations = np.zeros((2,n+1,2))
-    locations[0,0,...] = a.location
-    locations[1,0,...] = b.location
+def plotTrajectories(creatures,dt=0.01,n=20):
+    locations = np.zeros((len(creatures),n,2))
+    olocations = np.zeros((2,n,2))
 
     for i in range(n):
-        a.update(simple.socialForce, b, dt)
-        b.update(simple.socialForce, a, dt)
-        locations[0,i+1] = a.location
-        locations[1,i+1] = b.location
+        for j,creature in enumerate(creatures):
+            creature.update(simple.socialForce, creatures, dt)
+            locations[j,i] = creature.location
+
+        for creature in creatures:
+            creature.updateLocation()
+
+        # creatureA.update(simple.osocialForce, creatureB, dt)
+        # creatureB.update(simple.osocialForce, creatureA, dt)
+        #
+        # olocations[0,i] = creatureA.nextLocation
+        # olocations[1,i] = creatureB.nextLocation
+        #
+        # creatureA.updateLocation()
+        # creatureB.updateLocation()
+
+
 
     plt.figure()
-    plt.plot(locations[0,:,0],locations[0,:,1],label='a',color='blue')
-    plt.plot(locations[1,:,0],locations[1,:,1],label='b',color='red')
-    plt.plot(a.goal[0],a.goal[1],marker='X',color='blue')
-    plt.plot(b.goal[0],b.goal[1],marker='X',color='red')
+    for i in range(len(creatures)):
+        plt.plot(locations[i,:,0],locations[i,:,1],label='Pedestrian #{}'.format(i))
+    # plt.plot(olocations[0,:,0],olocations[0,:,1],'r:',label='A')
+    # plt.plot(olocations[1,:,0],olocations[1,:,1],'b:',label='B')
     plt.legend()
     plt.show()
 
-plotTrajectories(a,b,n=1000)
+plotTrajectories(creatures,n=1000)
