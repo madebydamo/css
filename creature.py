@@ -9,7 +9,7 @@ class Creature:
     velocity = np.zeros(2)
 
     #PRE: location = np.array([x,y]), goal = np.array([goalX,goalY])
-    def __init__(self, location, goal, desiredVelocity = 1.333, tau = 5):
+    def __init__(self, location, goal, desiredVelocity = 1.333, tau = 0.5):
         self.location = location
         self.goal = goal
         self.desiredVelocity = desiredVelocity

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 #locations = np.array([[6,6],[5,5]])  #agentDistanceForce > accelerationForce
 #locations = np.array([[3.8,5.0],[6.2,5.0]])
 #locations = np.array([[1,9],[9,1]])
-locations = np.array([[5,5.1],[6,6]])
+locations = np.array([[1.1,1],[9,9]])
 goals = np.array([[9,9],[1,1]])
 
 a = creature.Creature(locations[0],goals[0])
@@ -34,7 +34,7 @@ def plotVectors(a,b):
     quiver(b,a,'red')
     plt.show()
 
-def plotTrajectories(a,b,dt=0.2,n=20):
+def plotTrajectories(a,b,dt=0.01,n=20):
     locations = np.zeros((2,n+1,2))
     locations[0,0,...] = a.location
     locations[1,0,...] = b.location
@@ -53,4 +53,4 @@ def plotTrajectories(a,b,dt=0.2,n=20):
     plt.legend()
     plt.show()
 
-plotTrajectories(a,b,n=200)
+plotTrajectories(a,b,n=1000)
