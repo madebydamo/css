@@ -86,12 +86,16 @@ def showSimulation(filepath):
     ui.closeWindow()
 
 def testUI():
-    locations = np.array([[5, 5.1], [6, 6]])
-    goals = np.array([[9, 9], [1, 1]])
+    locations = np.array([[1,1.5],[9,9],[1,9]])
+    goals = np.array([[9,9],[1,1],[9,1]])
 
-    a = creature.Creature(locations[0],goals[0])
+    """a = creature.Creature(locations[0],goals[0])
     b = creature.Creature(locations[1],goals[1])
-    creatures = [a, b]
+    creatures = [a, b]"""
+
+    creatures = []
+    for i in range(3):
+        creatures.append(creature.Creature(locations[i],goals[i]))
 
     ui = UI(800, 500, 20, 10)
 
@@ -100,11 +104,14 @@ def testUI():
 
         dt = GetFrameTime()
 
-        a.update(simple.socialForce, b, 0.2)
-        b.update(simple.socialForce, a, 0.2)
+        for j,robot in enumerate(creatures):
+            robot.update(simple.socialForce, creatures, dt)
 
-        print("A: " + str(np.linalg.norm(a.goal-a.location)))
-        print("B: " + str(np.linalg.norm(b.goal - b.location)))
+        for robot in creatures:
+            robot.updateLocation()
+
+        #print("A: " + str(np.linalg.norm(a.goal-a.location)))
+        #print("B: " + str(np.linalg.norm(b.goal - b.location)))
 
     ui.closeWindow()
 
