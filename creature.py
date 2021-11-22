@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import random
 
 # run with python3 -m pipenv run python3 ui.py
 
@@ -14,6 +15,7 @@ class Creature:
         self.goal = goal
         self.desiredVelocity = desiredVelocity
         self.tau = tau
+        self.seed = random.randbytes(4)
 
     def desiredDirection(self):
         return normalize(self.goal-self.location)
@@ -34,8 +36,12 @@ class Creature:
         self.updateForce(socialForce,creatureB,dt)
         self.updateVelocity(dt)
         self.updateLocation(dt)
+
     def __str__(self):
         return f"loc:{self.location}, force:{self.force}"
+    def asarray(self):
+        return [self.location[0], self.location[1], self.force[0], self.force[1]]
+
 
 
 def normalize(v):

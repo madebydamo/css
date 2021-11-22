@@ -22,6 +22,25 @@ class UI:
         return float(x * self.worldWidth / self.windowWidth), float((self.windowHeight - y) * self.worldHeight / self.windowHeight)
 
     # use WindowShouldClose() to decide how long to run
+    def drawWindowFromArray(self, creatureArray):
+        BeginDrawing()
+        ClearBackground(RAYWHITE)
+        for creature in creatureArray:
+            print(creature)
+            (posX, posY) = self.worldToWindow(creature[0], creature[1])
+            DrawCircle(posX, posY, 5, BLACK) # position
+
+            # normalizedVel = (creature.velocity / creature.maxVelocity) * 1.25
+            # (lineX, lineY) = self.worldToWindow(creature[0] + normalizedVel[0],
+            #                                     creature[1] + normalizedVel[1])
+            # DrawLine(posX, posY, lineX, lineY, BLACK)
+
+        # output current mouse position
+        (mouseX, mouseY) = self.windowToWorld(GetMouseX(), GetMouseY())
+
+        DrawText(bytes(str(mouseX)+","+str(mouseY), 'utf-8'), 10, 10, 12, GRAY)
+
+        EndDrawing()
     def drawWindow(self, creatures):
         BeginDrawing()
         ClearBackground(RAYWHITE)
@@ -51,15 +70,15 @@ class UI:
 
 def showSimulation(filepath):
     import numpy
-    creatures = numpy.load(filepath, allow_pickle=True)
-    ui = UI(800, 800, 1000, 1000)
+    creatures = numpy.load(filepath)
+    ui = UI(800, 800, 40, 40)
 
     i = 0
     # print(creatures)
     # print("devider----------------------")
     # print(creatures[i])
     while not WindowShouldClose():
-        ui.drawWindow(creatures[i])
+        ui.drawWindowFromArray(creatures[i])
 
         i += 1
         # print("A: " + str(np.linalg.norm(a.goal-a.location)))
