@@ -15,6 +15,7 @@ class UI:
         self.worldHeight = worldHeight
 
     def worldToWindow(self, x, y): # inverted coordinate y space
+        print(f"x: {x}, y: {y}")
         return int(x * self.windowWidth / self.worldWidth), int(self.windowHeight - y * self.windowHeight / self.worldHeight)
 
     def windowToWorld(self, x, y):
@@ -26,6 +27,9 @@ class UI:
         ClearBackground(RAYWHITE)
 
         for creature in creatures:
+            print(creature)
+            if np.isnan(creature.location[0]) or np.isnan(creature.location[1]):
+                continue
             (posX, posY) = self.worldToWindow(creature.location[0], creature.location[1])
             DrawCircle(posX, posY, 5, BLACK) # position
 
@@ -44,8 +48,25 @@ class UI:
     def closeWindow(self):
         CloseWindow()
 
-if __name__ == "__main__":
-    import simple
+
+def showSimulation(filepath):
+    import numpy
+    creatures = numpy.load(filepath, allow_pickle=True)
+    ui = UI(800, 800, 1000, 1000)
+
+    i = 0
+    # print(creatures)
+    # print("devider----------------------")
+    # print(creatures[i])
+    while not WindowShouldClose():
+        ui.drawWindow(creatures[i])
+
+        i += 1
+        # print("A: " + str(np.linalg.norm(a.goal-a.location)))
+        # print("B: " + str(np.linalg.norm(b.goal - b.location)))
+    ui.closeWindow()
+
+def testUI():
     locations = np.array([[5, 5.1], [6, 6]])
     goals = np.array([[9, 9], [1, 1]])
 
@@ -67,3 +88,11 @@ if __name__ == "__main__":
         print("B: " + str(np.linalg.norm(b.goal - b.location)))
 
     ui.closeWindow()
+
+if __name__ == "__main__":
+    import simple
+    import sys
+    if(len(sys.argv) == 2):
+        showSimulation(sys.argv[1])
+    else:
+        testUI()

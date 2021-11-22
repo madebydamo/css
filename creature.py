@@ -34,6 +34,9 @@ class Creature:
         self.updateForce(socialForce,creatureB,dt)
         self.updateVelocity(dt)
         self.updateLocation(dt)
+    def __str__(self):
+        return f"loc:{self.location}, force:{self.force}"
+
 
 def normalize(v):
     norm = np.linalg.norm(v)
