@@ -86,8 +86,8 @@ def showSimulation(filepath):
     ui.closeWindow()
 
 def testUI():
-    locations = np.array([[1,1.5],[9,9],[1,9]])
-    goals = np.array([[9,9],[1,1],[9,1]])
+    locations = np.array([[1,1],[1,1.1],[3,1]])
+    goals = np.array([[1,9],[1,9.1],[3,9]])
 
     """a = creature.Creature(locations[0],goals[0])
     b = creature.Creature(locations[1],goals[1])

@@ -6,6 +6,8 @@ import random
 
 class Creature:
     maxVelocity = 1.388888
+    c = 0.1 # weaker influence for objects outside of view
+    phi = math.pi/2 # effictive angle of sight: 2 phi
     force = np.zeros(2)
     velocity = np.zeros(2)
     nextLocation = np.zeros(2)
@@ -43,6 +45,7 @@ class Creature:
 
     def __str__(self):
         return f"loc:{self.location}, force:{self.force}"
+
     def asarray(self):
         return [self.location[0], self.location[1], self.force[0], self.force[1]]
 

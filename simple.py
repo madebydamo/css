@@ -12,21 +12,33 @@ def evalData(individual):
     #return simulation.simulate(socialForce, objectForce, 1/30, 20)
     return 0
 
+# limits the influence of a force depending if its viewable
+def limitForce(creatureA, force):
+    w = creatureA.c
+    e = creatureA.desiredDirection()
+    if np.dot(e, -force) > norm(-force) * math.cos(creatureA.phi):
+        w = 1
+    return w * force
+
 def socialForce(creatureA,creatures, dt):
-    return accelerationForce(creatureA) + agentDistanceForce(creatureA,creatures,dt)
+    return accelerationForce(creatureA) + agentDistanceForceWithFOV(creatureA,creatures,dt)
+
+def agentDistanceForceAB(creatureA, creatureB, dt, A=2.1, B=0.3):
+    velocity = creatureB.velocity - creatureA.velocity
+    distance = creatureA.location - creatureB.location
+    distanceByVelocity = velocity * dt  # yab
+    b = np.sqrt(norm(distance) + norm(distance - distanceByVelocity) ** 2 - norm(distanceByVelocity) ** 2) / 2
+    return A * np.exp(-b / B) * (norm(distance) + norm(distance - distanceByVelocity)) / (2 * b) * 0.5 * (
+                distance / norm(distance) + (distance - distanceByVelocity) / norm(distance - distanceByVelocity))
 
 # f_{alpha beta}, the force between two agents
 def agentDistanceForce(creatureA, creatures, dt, A=2.1 ,B=0.3):
-    forceAI = np.zeros(2)
+    forceA = np.zeros(2)
     velocityA = creatureA.velocity
     for creatureI in creatures:
         if creatureI is not creatureA:
-            velocity = creatureI.velocity - velocityA
-            distance = creatureA.location - creatureI.location
-            distanceByVelocity = velocity * dt  #yab
-            b = np.sqrt( norm(distance) + norm(distance - distanceByVelocity)**2  - norm(distanceByVelocity)**2 ) / 2
-            forceAI = forceAI + A * np.exp(-b/B) * (norm(distance)+norm(distance-distanceByVelocity))/(2*b) * 0.5*(distance/norm(distance) + (distance-distanceByVelocity)/norm(distance-distanceByVelocity))
-    return forceAI
+            forceA += agentDistanceForceAB(creatureA, creatureI, dt, A, B)
+    return forceA
     """
     va,vb = creatureA.velocity, creatureB.velocity
     distance = creatureA.location - creatureB.location
@@ -34,6 +46,16 @@ def agentDistanceForce(creatureA, creatures, dt, A=2.1 ,B=0.3):
     b = np.sqrt(norm(distance) + norm(distance - (vb-va)*dt)**2 - norm((vb-va)*dt)**2)/2
     return A * np.exp(-b/B) * (norm(distance)+norm(distance-distanceByVelocity))/(2*b) * 0.5*(distance/norm(distance) + (distance-distanceByVelocity)/norm(distance-distanceByVelocity))
     """
+
+def agentDistanceForceWithFOV(creatureA, creatures, dt, A=2.1 ,B=0.3):
+    forceA = np.zeros(2)
+    velocityA = creatureA.velocity
+    for creatureI in creatures:
+        if creatureI is not creatureA:
+            forceAI = agentDistanceForceAB(creatureA, creatureI, dt, A, B)
+            forceA += limitForce(creatureA, forceAI)
+    return forceA
+
 
 # def osocialForce(creatureA,creatures, dt):
 #     return accelerationForce(creatureA) + oagentDistanceForce(creatureA,creatures,dt)
