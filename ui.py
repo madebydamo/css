@@ -3,6 +3,7 @@ import numpy as np
 
 import creature
 import wall
+import simulation
 
 """
     Class used to show a simulation on a window:
@@ -22,7 +23,7 @@ class UI:
         self.creatureRadius = (windowWidth / worldWidth) / 4
 
     def worldToWindow(self, x, y): # inverted coordinate y space
-        print(f"x: {x}, y: {y}")
+        # print(f"x: {x}, y: {y}")
         return int(x * self.windowWidth / self.worldWidth), int(self.windowHeight - y * self.windowHeight / self.worldHeight)
 
     def windowToWorld(self, x, y):
@@ -53,7 +54,7 @@ class UI:
 
         EndDrawing()
 
-    def drawWindow(self, creatures, walls = []):
+    def drawWindow(self, creatures, walls = [], timePassed = 0):
         BeginDrawing()
         ClearBackground(RAYWHITE)
 
@@ -79,6 +80,9 @@ class UI:
         (mouseX, mouseY) = self.windowToWorld(GetMouseX(), GetMouseY())
         DrawText(bytes(str(mouseX)+","+str(mouseY), 'utf-8'), 10, 10, 12, GRAY)
 
+        # output current troughput
+        DrawText(bytes("Troughput: " + str(simulation.calculateTroughput(creatures, timePassed)), 'utf-8'), 10, self.windowHeight-20, 12, GRAY)
+
         EndDrawing()
 
     def closeWindow(self):
@@ -101,28 +105,33 @@ def showSimulation(filepath):
     ui.closeWindow()
 
 def testUI():
-    #locations = np.array([[1,1],[1,1.1],[3,1]])
-    #goals = np.array([[1,9],[1,9.1],[3,9]])
-    locations = np.array([[2.2,1],[2,9]])
-    goals = np.array([[[2.2,11],[3,11]],[[2,1],[2,9],[2,1]]])
-    wall_positions = np.array([[2.5,0.5],[2.5,10]])
+    locations = np.array([[1.1,1],[0.9,1.5],[1.2,2],[5,1.2],[5,1.51],[5,1.8]])
+    goals = np.array([[[4.5,1]],[[4.5,1.5]],[[4.5,2]],[[1.5,1]],[[1.5,1.5]],[[1.5,2]]])
+    #locations = np.array([[2.2,1],[2,9]])
+    #goals = np.array([[[2.2,11],[3,11]],[[2,1],[2,9],[2,1]]])
+    wall_positions = np.array([])
 
     """a = creature.Creature(locations[0],goals[0])
     b = creature.Creature(locations[1],goals[1])
     creatures = [a, b]"""
 
+    print("#Creatures: "+str(len(locations)))
+    print("#Walls: "+str(len(wall_positions)/2))
+
     creatures = []
-    for i in range(locations.ndim):
-        creatures.append(creature.Creature(locations[i],goals[i]))
+    for i in range(len(locations)):
+        creatures.append(creature.Creature(locations[i],goals[i], 1.3333, 0.4, True))
 
     walls = []
-    for i in range(0, wall_positions.ndim, 2):
+    for i in range(0, len(wall_positions), 2):
         walls.append(wall.Wall(wall_positions[i], wall_positions[i+1]))
 
-    ui = UI(800, 500, 15, 15)
+    ui = UI(500, 500, 5, 5)
 
-    while not WindowShouldClose():
-        ui.drawWindow(creatures, walls)
+    timePassed = 0
+
+    while not WindowShouldClose() and timePassed < 20:
+        ui.drawWindow(creatures, walls, timePassed)
 
         dt = 0.01 # GetFrameTime()
 
@@ -132,10 +141,10 @@ def testUI():
         for robot in creatures:
             robot.updateLocation()
 
-        #print("A: " + str(np.linalg.norm(a.goal-a.location)))
-        #print("B: " + str(np.linalg.norm(b.goal - b.location)))
+        timePassed += dt
 
     ui.closeWindow()
+    print(simulation.calculateTroughput(creatures, timePassed))
 
 if __name__ == "__main__":
     import simple

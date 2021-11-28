@@ -24,9 +24,9 @@ def limitForce(creatureA, force):
     return w * force
 
 def socialForce(creatureA,creatures, dt):
-    return accelerationForce(creatureA) + agentDistanceForceWithFOV(creatureA,creatures,dt)
+    return accelerationForce(creatureA) + agentDistanceForce(creatureA,creatures,dt)
 
-def agentDistanceForceAB(creatureA, creatureB, dt, A=2.1, B=0.3):
+def agentDistanceForceAB(creatureA, creatureB, dt, A, B):
     velocity = creatureB.velocity - creatureA.velocity
     distance = creatureA.location - creatureB.location
     distanceByVelocity = velocity * dt  # yab

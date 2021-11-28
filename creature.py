@@ -21,15 +21,19 @@ class Creature:
     nextLocation = np.zeros(2)
 
     finished = False
+    numberOfRounds = 0
 
     #PRE: location = np.array([x,y]), goal = np.array([goalX,goalY])
-    def __init__(self, location, path, desiredVelocity = 1.333, tau = 0.5):
+    def __init__(self, location, path, desiredVelocity = 1.333, tau = 0.5, repeating = False):
         self.location = location
+        self.startingLocation = location
 
         self.currentDest = path[0]
         self.path = path
         self.pathIdx = 0
         self.finished = False
+
+        self.repeating = repeating
 
         self.desiredVelocity = desiredVelocity
         self.tau = tau
@@ -38,9 +42,8 @@ class Creature:
         return self.seed == other.seed
 
     def update(self,socialForce,creatureB,dt):
-        if self.finished: # could also be reset after finishing path
+        if self.finished:
             return
-
         self.updateForce(socialForce,creatureB,dt)
         self.updateVelocity(dt)
         self.calculateLocation(dt)
@@ -71,7 +74,17 @@ class Creature:
             if self.pathIdx < len(self.path):
                 self.currentDest = self.path[self.pathIdx]
             else:
-                self.finished = True
+                # finished round
+                self.numberOfRounds += 1
+                if self.repeating:
+                    self.location = self.startingLocation
+                    self.nextLocation = self.location
+
+                    self.force = np.zeros(2)
+                    self.velocity = np.zeros(2)
+                else:
+                    self.finished = True
+
 
     def __str__(self):
         return f"loc:{self.location}, force:{self.force}"
