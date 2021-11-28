@@ -19,6 +19,7 @@ class UI:
 
         self.worldWidth = worldWidth
         self.worldHeight = worldHeight
+        self.creatureRadius = (windowWidth / worldWidth) / 4
 
     def worldToWindow(self, x, y): # inverted coordinate y space
         print(f"x: {x}, y: {y}")
@@ -28,13 +29,17 @@ class UI:
         return float(x * self.worldWidth / self.windowWidth), float((self.windowHeight - y) * self.worldHeight / self.windowHeight)
 
     # use WindowShouldClose() to decide how long to run
-    def drawWindowFromArray(self, creatureArray):
+    def drawWindowFromArray(self, creatureArray, objectArray):
         BeginDrawing()
         ClearBackground(RAYWHITE)
+        for objectEl in objectArray:
+            (pos1X, pos1Y) = self.worldToWindow(objectEl[0][0], objectEl[0][1])
+            (pos2X, pos2Y) = self.worldToWindow(objectEl[1][0], objectEl[1][1])
+            DrawLine(pos1X, pos1Y, pos2X, pos2Y, BLACK)
         for creature in creatureArray:
             print(creature)
             (posX, posY) = self.worldToWindow(creature[0], creature[1])
-            DrawCircle(posX, posY, 5, BLACK) # position
+            DrawCircle(posX, posY, self.creatureRadius, BLACK) # position
 
             # normalizedVel = (creature.velocity / creature.maxVelocity) * 1.25
             # (lineX, lineY) = self.worldToWindow(creature[0] + normalizedVel[0],
@@ -81,19 +86,18 @@ class UI:
 
 
 def showSimulation(filepath):
-    creatures = np.load(filepath)
-    ui = UI(800, 800, 40, 40)
+    creatures = np.load(filepath, allow_pickle=True)
+    ui = UI(800, 800, 10, 10)
+    objects = creatures[0]
 
-    i = 0
+    i = 1
     # print(creatures)
     # print("devider----------------------")
     # print(creatures[i])
-    while not WindowShouldClose():
-        ui.drawWindowFromArray(creatures[i])
+    while creatures.size > i and not WindowShouldClose():
+        ui.drawWindowFromArray(creatures[i], objects)
 
         i += 1
-        # print("A: " + str(np.linalg.norm(a.goal-a.location)))
-        # print("B: " + str(np.linalg.norm(b.goal - b.location)))
     ui.closeWindow()
 
 def testUI():

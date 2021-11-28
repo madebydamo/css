@@ -29,10 +29,13 @@ class Creature:
         self.currentDest = path[0]
         self.path = path
         self.pathIdx = 0
+        self.finished = False
 
         self.desiredVelocity = desiredVelocity
         self.tau = tau
         self.seed = random.randbytes(4)
+    def __eq__(self, other):
+        return self.seed == other.seed
 
     def update(self,socialForce,creatureB,dt):
         if self.finished: # could also be reset after finishing path
@@ -63,7 +66,7 @@ class Creature:
         return normalize(self.currentDest-self.location)
 
     def updateDestination(self):
-        if np.linalg.norm(self.currentDest-self.location) < 0.1: # reached current dest
+        if np.linalg.norm(self.currentDest-self.location) < 0.5: # reached current dest
             self.pathIdx += 1
             if self.pathIdx < len(self.path):
                 self.currentDest = self.path[self.pathIdx]
