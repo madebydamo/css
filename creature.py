@@ -4,6 +4,14 @@ import random
 
 # run with python3 -m pipenv run python3 ui.py
 
+"""
+    Implementation of a single creature
+    
+    Differentiate between variables which are manipulated in the simulation (position, velocity, forces, ...)
+    and parameters which are to be decided upon by a genetic algorithm which minimizes a certain function and
+    values which are the same for every creature in all simulations (maxVelocity)
+"""
+
 class Creature:
     maxVelocity = 1.388888
     c = 0.1 # weaker influence for objects outside of view

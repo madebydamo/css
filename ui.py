@@ -4,6 +4,11 @@ import numpy as np
 import creature
 import wall
 
+"""
+    Class used to show a simulation on a window:
+        - additional functions to convert between window and world space
+"""
+
 class UI:
     def __init__(self, windowWidth, windowHeight, worldWidth, worldHeight):
         InitWindow(windowWidth, windowHeight, b"Social Forces Model")
@@ -47,19 +52,19 @@ class UI:
         BeginDrawing()
         ClearBackground(RAYWHITE)
 
-        for creature in creatures:
-            print(creature)
+        for creature in creatures: # draws all the creatures
             if np.isnan(creature.location[0]) or np.isnan(creature.location[1]):
                 continue
             (posX, posY) = self.worldToWindow(creature.location[0], creature.location[1])
-            DrawCircle(posX, posY, 5, BLACK) # position
+            DrawCircle(posX, posY, 5, BLACK)
 
+            # draw line showing current velocity
             normalizedVel = (creature.velocity / creature.maxVelocity) * 1.25
             (lineX, lineY) = self.worldToWindow(creature.location[0] + normalizedVel[0],
                                                 creature.location[1] + normalizedVel[1])
             DrawLine(posX, posY, lineX, lineY, GRAY)
 
-        for wall in walls:
+        for wall in walls: # draws walls
             (startX, startY) = self.worldToWindow(wall.start[0], wall.start[1])
             (endX, endY) = self.worldToWindow(wall.end[0], wall.end[1])
 
@@ -67,7 +72,6 @@ class UI:
 
         # output current mouse position
         (mouseX, mouseY) = self.windowToWorld(GetMouseX(), GetMouseY())
-
         DrawText(bytes(str(mouseX)+","+str(mouseY), 'utf-8'), 10, 10, 12, GRAY)
 
         EndDrawing()

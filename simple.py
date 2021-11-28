@@ -1,9 +1,12 @@
-#import simulation
 import creature
 import math
 import numpy as np
 from numpy.linalg import norm
 
+"""
+    Implements the different forces
+    Additionally there is also implementations of the forces dependent on a field of view of a creature
+"""
 
 def evalData(individual):
     params = individual
