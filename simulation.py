@@ -33,3 +33,10 @@ def simulate(socialForce, objectForce, timestep, duration):
     return 0
 
 
+def calculateTroughput(creatures, timePassed):
+    sum = 0
+    for creature in creatures:
+        sum += creature.numberOfRounds
+    if timePassed < 0.0000001:
+        return sum
+    return sum / timePassed
