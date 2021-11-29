@@ -58,12 +58,7 @@ class UI:
         BeginDrawing()
         ClearBackground(RAYWHITE)
 
-<<<<<<< HEAD
-        for creature in creatures:
-            #print(creature)
-=======
         for creature in creatures: # draws all the creatures
->>>>>>> 5f11b128c62adb2a1c583aa8981ae2d53b7c7264
             if np.isnan(creature.location[0]) or np.isnan(creature.location[1]):
                 continue
             (posX, posY) = self.worldToWindow(creature.location[0], creature.location[1])
@@ -110,7 +105,6 @@ def showSimulation(filepath):
     ui.closeWindow()
 
 def testUI():
-<<<<<<< HEAD
         # #locations = np.array([[1,1],[1,1.1],[3,1]])
         # #goals = np.array([[1,9],[1,9.1],[3,9]])
         # locations = np.array([[2.2,1],[2,9]])
@@ -128,13 +122,6 @@ def testUI():
         # walls = []
         # for i in range(0, wall_positions.ndim, 2):
         #     walls.append(wall.Wall(wall_positions[i], wall_positions[i+1]))
-=======
-    locations = np.array([[1.1,1],[0.9,1.5],[1.2,2],[5,1.2],[5,1.51],[5,1.8]])
-    goals = np.array([[[4.5,1]],[[4.5,1.5]],[[4.5,2]],[[1.5,1]],[[1.5,1.5]],[[1.5,2]]])
-    #locations = np.array([[2.2,1],[2,9]])
-    #goals = np.array([[[2.2,11],[3,11]],[[2,1],[2,9],[2,1]]])
-    wall_positions = np.array([])
->>>>>>> 5f11b128c62adb2a1c583aa8981ae2d53b7c7264
 
     locations = np.array([[0.2,1.2]])
     goals = np.array([[[3.8,3.8]]])
@@ -142,10 +129,9 @@ def testUI():
     #goals = np.array([[9,9],[1,1],[9,1]])
 
     print("#Creatures: "+str(len(locations)))
-    print("#Walls: "+str(len(wall_positions)/2))
+    #print("#Walls: "+str(len(wall_positions)/2))
 
     creatures = []
-<<<<<<< HEAD
 
     for i in range(locations.shape[0]):
         creatures.append(creature.Creature(locations[i],goals[i]))
@@ -163,16 +149,6 @@ def testUI():
 
 
     ui = UI(800, 800, 5, 5)
-=======
-    for i in range(len(locations)):
-        creatures.append(creature.Creature(locations[i],goals[i], 1.3333, 0.4, True))
-
-    walls = []
-    for i in range(0, len(wall_positions), 2):
-        walls.append(wall.Wall(wall_positions[i], wall_positions[i+1]))
-
-    ui = UI(500, 500, 5, 5)
->>>>>>> 5f11b128c62adb2a1c583aa8981ae2d53b7c7264
 
     timePassed = 0
 

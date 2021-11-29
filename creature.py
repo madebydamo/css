@@ -41,18 +41,11 @@ class Creature:
     def __eq__(self, other):
         return self.seed == other.seed
 
-<<<<<<< HEAD
     def update(self,socialForce, creatureB, objects, dt):
         if self.finished: # could also be reset after finishing path
             return
 
         self.updateForce(socialForce,creatureB,objects,dt)
-=======
-    def update(self,socialForce,creatureB,dt):
-        if self.finished:
-            return
-        self.updateForce(socialForce,creatureB,dt)
->>>>>>> 5f11b128c62adb2a1c583aa8981ae2d53b7c7264
         self.updateVelocity(dt)
         self.calculateLocation(dt)
 
