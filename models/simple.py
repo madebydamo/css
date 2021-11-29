@@ -3,7 +3,7 @@ import math
 import numpy as np
 from numpy.linalg import norm
 
-paramnr = 3
+paramnr = 5
 """
     Implements the different forces
     Additionally there is also implementations of the forces dependent on a field of view of a creature
@@ -13,8 +13,8 @@ def socialForce(creatureA,creatures, objects, dt):
     return accelerationForce(creatureA) + agentDistanceForce(creatureA,creatures,dt) + agentObjectForce(creatureA, objects,dt)
 
 #todo
-def socialForceWithParams(creatureA,creatures, dt, params):
-    return accelerationForce(creatureA, tau=params[2]) + agentDistanceForce(creatureA,creatures,dt, A=params[0], B=params[1])
+def socialForceWithParams(creatureA, creatures, objects, dt, params):
+    return accelerationForce(creatureA, tau=params[2]) + agentDistanceForce(creatureA,creatures,dt, A=params[0], B=params[1]) + agentObjectForce(creatureA, objects,dt, A=params[3], B=params[4])
 
 def agentDistanceForceAB(creatureA, creatureB, dt, A, B):
     velocity = creatureB.velocity - creatureA.velocity
