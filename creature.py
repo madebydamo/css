@@ -4,6 +4,14 @@ import random
 
 # run with python3 -m pipenv run python3 ui.py
 
+"""
+    Implementation of a single creature
+    
+    Differentiate between variables which are manipulated in the simulation (position, velocity, forces, ...)
+    and parameters which are to be decided upon by a genetic algorithm which minimizes a certain function and
+    values which are the same for every creature in all simulations (maxVelocity)
+"""
+
 class Creature:
     maxVelocity = 1.388888
     c = 0.1 # weaker influence for objects outside of view
@@ -13,24 +21,38 @@ class Creature:
     nextLocation = np.zeros(2)
 
     finished = False
+    numberOfRounds = 0
 
     #PRE: location = np.array([x,y]), goal = np.array([goalX,goalY])
-    def __init__(self, location, path, desiredVelocity = 1.333, tau = 0.5):
+    def __init__(self, location, path, desiredVelocity = 1.333, tau = 0.5, repeating = False):
         self.location = location
+        self.startingLocation = location
 
         self.currentDest = path[0]
         self.path = path
         self.pathIdx = 0
+        self.finished = False
+
+        self.repeating = repeating
 
         self.desiredVelocity = desiredVelocity
         self.tau = tau
         self.seed = random.randbytes(4)
+    def __eq__(self, other):
+        return self.seed == other.seed
 
+<<<<<<< HEAD
     def update(self,socialForce, creatureB, objects, dt):
         if self.finished: # could also be reset after finishing path
             return
 
         self.updateForce(socialForce,creatureB,objects,dt)
+=======
+    def update(self,socialForce,creatureB,dt):
+        if self.finished:
+            return
+        self.updateForce(socialForce,creatureB,dt)
+>>>>>>> 5f11b128c62adb2a1c583aa8981ae2d53b7c7264
         self.updateVelocity(dt)
         self.calculateLocation(dt)
 
@@ -55,12 +77,22 @@ class Creature:
         return normalize(self.currentDest-self.location)
 
     def updateDestination(self):
-        if np.linalg.norm(self.currentDest-self.location) < 0.1: # reached current dest
+        if np.linalg.norm(self.currentDest-self.location) < 0.5: # reached current dest
             self.pathIdx += 1
             if self.pathIdx < len(self.path):
                 self.currentDest = self.path[self.pathIdx]
             else:
-                self.finished = True
+                # finished round
+                self.numberOfRounds += 1
+                if self.repeating:
+                    self.location = self.startingLocation
+                    self.nextLocation = self.location
+
+                    self.force = np.zeros(2)
+                    self.velocity = np.zeros(2)
+                else:
+                    self.finished = True
+
 
     def __str__(self):
         return f"loc:{self.location}, force:{self.force}"

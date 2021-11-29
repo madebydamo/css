@@ -43,6 +43,7 @@ class Wall:
         projection = self.start + t * (self.end - self.start)
         return math.sqrt((projection[0] - location[0]) ** 2 + (projection[1] - location[1]) ** 2)
 
+<<<<<<< HEAD
 
 
 
@@ -60,3 +61,7 @@ class Wall:
   return distance(p, projection);
 }
 """
+=======
+    def asarray(self):
+        return [[self.start[0], self.start[1]], [self.end[0], self.end[1]]]
+>>>>>>> 5f11b128c62adb2a1c583aa8981ae2d53b7c7264
