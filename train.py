@@ -16,7 +16,7 @@ toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
 toolbox.register("select", tools.selTournament, tournsize=3)
 
-population = toolbox.population(n=300)
+population = toolbox.population(n=100)
 
 NGEN=40
 for gen in range(NGEN):
