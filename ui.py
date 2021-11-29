@@ -16,7 +16,7 @@ class UI:
         self.worldHeight = worldHeight
 
     def worldToWindow(self, x, y): # inverted coordinate y space
-        print(f"x: {x}, y: {y}")
+        # print(f"x: {x}, y: {y}")
         return int(x * self.windowWidth / self.worldWidth), int(self.windowHeight - y * self.windowHeight / self.worldHeight)
 
     def windowToWorld(self, x, y):
@@ -48,7 +48,7 @@ class UI:
         ClearBackground(RAYWHITE)
 
         for creature in creatures:
-            print(creature)
+            #print(creature)
             if np.isnan(creature.location[0]) or np.isnan(creature.location[1]):
                 continue
             (posX, posY) = self.worldToWindow(creature.location[0], creature.location[1])
@@ -93,25 +93,47 @@ def showSimulation(filepath):
     ui.closeWindow()
 
 def testUI():
-    #locations = np.array([[1,1],[1,1.1],[3,1]])
-    #goals = np.array([[1,9],[1,9.1],[3,9]])
-    locations = np.array([[2.2,1],[2,9]])
-    goals = np.array([[[2.2,11],[3,11]],[[2,1],[2,9],[2,1]]])
-    wall_positions = np.array([[2.5,0.5],[2.5,10]])
+        # #locations = np.array([[1,1],[1,1.1],[3,1]])
+        # #goals = np.array([[1,9],[1,9.1],[3,9]])
+        # locations = np.array([[2.2,1],[2,9]])
+        # goals = np.array([[[2.2,11],[3,11]],[[2,1],[2,9],[2,1]]])
+        # wall_positions = np.array([[2.5,0.5],[2.5,10]])
+        #
+        # """a = creature.Creature(locations[0],goals[0])
+        # b = creature.Creature(locations[1],goals[1])
+        # creatures = [a, b]"""
+        #
+        # creatures = []
+        # for i in range(locations.ndim):
+        #     creatures.append(creature.Creature(locations[i],goals[i]))
+        #
+        # walls = []
+        # for i in range(0, wall_positions.ndim, 2):
+        #     walls.append(wall.Wall(wall_positions[i], wall_positions[i+1]))
 
-    """a = creature.Creature(locations[0],goals[0])
-    b = creature.Creature(locations[1],goals[1])
-    creatures = [a, b]"""
+    locations = np.array([[0.2,1.2]])
+    goals = np.array([[[3.8,3.8]]])
+    #locations = np.array([[1,1],[9,9],[1,9]])
+    #goals = np.array([[9,9],[1,1],[9,1]])
 
     creatures = []
-    for i in range(locations.ndim):
+
+    for i in range(locations.shape[0]):
         creatures.append(creature.Creature(locations[i],goals[i]))
 
-    walls = []
-    for i in range(0, wall_positions.ndim, 2):
-        walls.append(wall.Wall(wall_positions[i], wall_positions[i+1]))
+    #wallStart = np.array([[0,0],[4,0],[4,4],[0,4],[1.5,1.5],[2.5,1.5],[2.5,2.5],[1.5,2.5]])
+    #wallEnd = np.array([[4,0],[4,4],[0,4],[0,0],[2.5,1.5],[2.5,2.5],[1.5,2.5],[1.5,1.5]])
+    wallStart = np.array([[4,1]])
+    wallEnd = np.array([[1,3]])
 
-    ui = UI(800, 500, 15, 15)
+    walls = []
+
+    for i in range(wallStart.shape[0]):
+        walls.append(wall.Wall(wallStart[i],wallEnd[i]))
+
+
+
+    ui = UI(800, 800, 5, 5)
 
     while not WindowShouldClose():
         ui.drawWindow(creatures, walls)
@@ -119,7 +141,7 @@ def testUI():
         dt = 0.01 # GetFrameTime()
 
         for j,robot in enumerate(creatures):
-            robot.update(simple.socialForce, creatures, dt)
+            robot.update(simple.socialForce, creatures, walls, dt)
 
         for robot in creatures:
             robot.updateLocation()

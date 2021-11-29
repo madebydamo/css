@@ -61,19 +61,21 @@ def projectedVectorBa(vectorA, vectorB):
     return Ba
 
 def agentObjectForceAB(creatureA, objectI, dt, A,B):
-    projectedVector = projectedVectorBa(objectI.vector,creatureA.location)
+    nearestPoint = objectI.nearestPoint(creatureA.location)
+    distanceVector = creatureA.location - nearestPoint
     velocity = -creatureA.velocity
     distanceByVelocity = velocity*dt
-    distance = creatureA.location - projectedVector
-    b = np.sqrt(norm(distance) + norm(distance - distanceByVelocity) ** 2 - norm(distanceByVelocity) ** 2) / 2
-    return A * np.exp(-b / B) * (norm(distance) + norm(distance - distanceByVelocity)) / (2 * b) * 0.5 * (
+    distance = distanceVector
+#    b = np.sqrt(norm(distance) + norm(distance - distanceByVelocity) ** 2 - norm(distanceByVelocity) ** 2) / 2
+    return A * np.exp(-norm(distance) / B) * (norm(distance) + norm(distance - distanceByVelocity)) / (2 * norm(distance)) * 0.5 * (
                 distance / norm(distance) + (distance - distanceByVelocity) / norm(distance - distanceByVelocity))
 
-def agentObjectForce(creatureA, objects, dt, A=10, B=0.01):
+def agentObjectForce(creatureA, objects, dt, A=10, B=0.2):
     forceA = np.zeros(2)
-    for objectI in objects:
+    for index,objectI in enumerate(objects):
         forceAI = agentObjectForceAB(creatureA,objectI,dt,A,B)
         forceA += forceAI
+        #print('Wall Nr° {}, Start{},{} & End {},{} , Force = {}'.format(index,objectI.start[0],objectI.start[1], objectI.end[0], objectI.end[1], np.mean(forceAI)))
     return forceA
 
 # def osocialForce(creatureA,creatures, dt):
