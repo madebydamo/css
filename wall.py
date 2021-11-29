@@ -3,8 +3,37 @@ import math
 
 class Wall:
     def __init__(self, start, end):
-        self.start = np.array(start)
-        self.end = np.array(end)
+        self.start = start
+        self.end = end
+        self.vector = self.end - self.start
+
+    def projectedVector(self,b):
+        a = self.start
+        ba = (a[0]*b[0] + a[1]*b[1])/(a[0]**2+a[1]**2) * a
+        return ba
+
+    def projectedPoint(self, vector):
+        proPoint = self.projectedVector(vector)+self.start
+        print('Projected Point: ',proPoint)
+        return proPoint
+
+    def nearestPoint(self,creatureLocation):
+        creatureVector = creatureLocation - self.start
+        projectedPoint = self.projectedPoint(creatureVector)
+
+        # collision checks
+        xCheck = projectedPoint[0] < min(self.start[0], self.end[0]) or projectedPoint[0] > max(self.start[0], self.end[0])
+        yCheck = projectedPoint[1] < min(self.start[1], self.end[1]) or projectedPoint[1] > max(self.start[1], self.end[1])
+        if xCheck or yCheck:
+            startDistance = creatureLocation - self.start
+            endDistance = creatureLocation - self.end
+
+            if (np.linalg.norm(startDistance) < np.linalg.norm(endDistance)):
+                return self.start
+            else:
+                return self.end
+        else:
+            return projectedPoint
 
     def distance(self, location):
         length_squared = (self.start[0] - self.end[0]) ** 2 + (self.start[1] - self.end[1]) ** 2
@@ -14,5 +43,25 @@ class Wall:
         projection = self.start + t * (self.end - self.start)
         return math.sqrt((projection[0] - location[0]) ** 2 + (projection[1] - location[1]) ** 2)
 
+<<<<<<< HEAD
+
+
+
+"""
+        ifloat minimum_distance(vec2 v, vec2 w, vec2 p) {
+  // Return minimum distance between line segment vw and point p
+  const float l2 = length_squared(v, w);  // i.e. |w-v|^2 -  avoid a sqrt
+  if (l2 == 0.0) return distance(p, v);   // v == w case
+  // Consider the line extending the segment, parameterized as v + t (w - v).
+  // We find projection of point p onto the line.
+  // It falls where t = [(p-v) . (w-v)] / |w-v|^2
+  // We clamp t from [0,1] to handle points outside the segment vw.
+  const float t = max(0, min(1, dot(p - v, w - v) / l2));
+  const vec2 projection = v + t * (w - v);  // Projection falls on the segment
+  return distance(p, projection);
+}
+"""
+=======
     def asarray(self):
         return [[self.start[0], self.start[1]], [self.end[0], self.end[1]]]
+>>>>>>> 5f11b128c62adb2a1c583aa8981ae2d53b7c7264

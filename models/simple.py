@@ -9,9 +9,10 @@ paramnr = 3
     Additionally there is also implementations of the forces dependent on a field of view of a creature
 """
 
-def socialForce(creatureA,creatures, dt):
-    return accelerationForce(creatureA) + agentDistanceForce(creatureA,creatures,dt)
+def socialForce(creatureA,creatures, objects, dt):
+    return accelerationForce(creatureA) + agentDistanceForce(creatureA,creatures,dt) + agentObjectForce(creatureA, objects,dt)
 
+#todo
 def socialForceWithParams(creatureA,creatures, dt, params):
     return accelerationForce(creatureA, tau=params[2]) + agentDistanceForce(creatureA,creatures,dt, A=params[0], B=params[1])
 
@@ -38,6 +39,28 @@ def agentDistanceForce(creatureA, creatures, dt, A=2.1 ,B=0.3):
     b = np.sqrt(norm(distance) + norm(distance - (vb-va)*dt)**2 - norm((vb-va)*dt)**2)/2
     return A * np.exp(-b/B) * (norm(distance)+norm(distance-distanceByVelocity))/(2*b) * 0.5*(distance/norm(distance) + (distance-distanceByVelocity)/norm(distance-distanceByVelocity))
     """
+
+def projectedVectorBa(vectorA, vectorB):
+    Ba = (vectorA[0]*vectorB[0] + vectorA[1]*vectorB[1])/(vectorA[0]**2+vectorA[1]**2) * vectorA
+    return Ba
+
+def agentObjectForceAB(creatureA, objectI, dt, A,B):
+    nearestPoint = objectI.nearestPoint(creatureA.location)
+    distanceVector = creatureA.location - nearestPoint
+    velocity = -creatureA.velocity
+    distanceByVelocity = velocity*dt
+    distance = distanceVector
+#    b = np.sqrt(norm(distance) + norm(distance - distanceByVelocity) ** 2 - norm(distanceByVelocity) ** 2) / 2
+    return A * np.exp(-norm(distance) / B) * (norm(distance) + norm(distance - distanceByVelocity)) / (2 * norm(distance)) * 0.5 * (
+                distance / norm(distance) + (distance - distanceByVelocity) / norm(distance - distanceByVelocity))
+
+def agentObjectForce(creatureA, objects, dt, A=10, B=0.2):
+    forceA = np.zeros(2)
+    for index,objectI in enumerate(objects):
+        forceAI = agentObjectForceAB(creatureA,objectI,dt,A,B)
+        forceA += forceAI
+        #print('Wall Nr° {}, Start{},{} & End {},{} , Force = {}'.format(index,objectI.start[0],objectI.start[1], objectI.end[0], objectI.end[1], np.mean(forceAI)))
+    return forceA
 
 # def osocialForce(creatureA,creatures, dt):
 #     return accelerationForce(creatureA) + oagentDistanceForce(creatureA,creatures,dt)
