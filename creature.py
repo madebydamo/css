@@ -14,8 +14,6 @@ import random
 
 class Creature:
     maxVelocity = 1.388888
-    c = 0.1 # weaker influence for objects outside of view
-    phi = math.pi/2 # effictive angle of sight: 2 phi
     force = np.zeros(2)
     velocity = np.zeros(2)
     nextLocation = np.zeros(2)
@@ -29,15 +27,17 @@ class Creature:
         self.startingLocation = location
 
         self.currentDest = path[0]
+        self.finalDest = path[-1]
         self.path = path
         self.pathIdx = 0
         self.finished = False
 
         self.repeating = repeating
+        self.seed = random.randbytes(4)
 
+        # params // shouldn't be needed here
         self.desiredVelocity = desiredVelocity
         self.tau = tau
-        self.seed = random.randbytes(4)
     def __eq__(self, other):
         return self.seed == other.seed
 

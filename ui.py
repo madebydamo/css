@@ -147,7 +147,7 @@ def testUI():
     print(simulation.calculateTroughput(creatures, timePassed))
 
 if __name__ == "__main__":
-    import simple
+    from models import simple
     import sys
     if(len(sys.argv) == 2):
         showSimulation(sys.argv[1])

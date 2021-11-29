@@ -1,13 +1,13 @@
 import math
-import simple
+from models import simple
 import creature
 import numpy as np
 import time
-import crossing as scene
+import evacuate as scene
 import wall 
 
 # socialForce and objectForce are lambdas with distance as an input
-def simulate(socialForce, objectForce, timestep, duration):
+def simulate(socialForce, objectForce, timestep, duration, dosave=False):
     # simulated field is 800x800"""
     savearray = []
     # initialization creatures
@@ -16,21 +16,25 @@ def simulate(socialForce, objectForce, timestep, duration):
     savearray.append(list(map(wall.Wall.asarray, objects)))
     # finish initialization
 
+    rating=0.0
     for i in range(0, round(duration / timestep)):
         creaturecopy = creatures.copy()
         a = []
         savearray.append(list(map(creature.Creature.asarray, creaturecopy)))
         for c in creatures:
             if(c.finished):
+                rating+=1 + 1/i
                 creatures.remove(c)
                 creaturecopy.remove(c)
             c.update(socialForce, creaturecopy, timestep)
         for c in creatures:
             c.updateLocation()
-        print(f"Frame {i} rendered")
-    np.save(f'./tmp/{time.time()}.npy', np.array(savearray))
-    # np.array(savearray).tofile(f'/tmp/${time.time()}', "", '%s')
-    return 0
+        # print(f"Frame {i} rendered")
+    for c in creatures:
+        rating += np.linalg.norm(c.startingLocation - c.location) / np.linalg.norm(c.startingLocation - c.finalDest)
+    if(dosave):
+        np.save(f'./tmp/{time.time()}.npy', np.array(savearray))
+    return rating
 
 
 def calculateTroughput(creatures, timePassed):
