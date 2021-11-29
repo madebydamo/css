@@ -4,11 +4,9 @@ from models import simple as simulationcase
 import simulation
 
 def evalData(params):
-    def socialForce(creatureA,creatures, dt):
-        return simulationcase.socialForceWithParams(creatureA, creatures, dt, params)
-    def objectForce(asdf):
-        return ""
-    return [simulation.simulate(socialForce, objectForce, 1.0/30, 10, False)]
+    def socialForce(creatureA,creatures,objects,dt):
+        return simulationcase.socialForceWithParams(creatureA, creatures,objects, dt, params)
+    return [simulation.simulate(socialForce, None, 1.0/30, 10, False)]
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMax)

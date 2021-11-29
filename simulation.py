@@ -1,5 +1,4 @@
 import math
-from models import simple
 import creature
 import numpy as np
 import time
@@ -26,9 +25,16 @@ def simulate(socialForce, objectForce, timestep, duration, dosave=False):
                 rating+=1 + 1/i
                 creatures.remove(c)
                 creaturecopy.remove(c)
-            c.update(socialForce, creaturecopy, timestep)
+            c.update(socialForce, creaturecopy, objects, timestep)
         for c in creatures:
             c.updateLocation()
+        for c in creatures:
+            for c2 in creatures:
+                if np.linalg.norm(c.location - c2.location) < 0.5:
+                    rating -= 1
+            for o in objects:
+                if o.distance(c.location) < 0.25:
+                    rating -=1
         # print(f"Frame {i} rendered")
     for c in creatures:
         rating += np.linalg.norm(c.startingLocation - c.location) / np.linalg.norm(c.startingLocation - c.finalDest)

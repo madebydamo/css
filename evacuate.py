@@ -4,11 +4,11 @@ import numpy as np
 
 def objects():
     objects = []
-    objects.append(wall.Wall([0.5, 0.5], [0.5, 5.5]))
-    objects.append(wall.Wall([0.5, 0.5], [5.5, 0.5]))
-    objects.append(wall.Wall([5.5, 0.5], [5.5, 2.6]))
-    objects.append(wall.Wall([5.5, 3.4], [5.5, 5.5]))
-    objects.append(wall.Wall([0.5, 5.5], [5.5, 5.5]))
+    objects.append(wall.Wall(np.asarray([0.5, 0.5]), np.asarray([0.5, 5.5])))
+    objects.append(wall.Wall(np.asarray([0.5, 0.5]), np.asarray([5.5, 0.5])))
+    objects.append(wall.Wall(np.asarray([5.5, 0.5]), np.asarray([5.5, 2.6])))
+    objects.append(wall.Wall(np.asarray([5.5, 3.4]), np.asarray([5.5, 5.5])))
+    objects.append(wall.Wall(np.asarray([0.5, 5.5]), np.asarray([5.5, 5.5])))
     return objects
 
 def creatures():
