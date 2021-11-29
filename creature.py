@@ -26,18 +26,18 @@ class Creature:
         self.tau = tau
         self.seed = random.randbytes(4)
 
-    def update(self,socialForce,creatureB,dt):
+    def update(self,socialForce, creatureB, objects, dt):
         if self.finished: # could also be reset after finishing path
             return
 
-        self.updateForce(socialForce,creatureB,dt)
+        self.updateForce(socialForce,creatureB,objects,dt)
         self.updateVelocity(dt)
         self.calculateLocation(dt)
 
         self.updateDestination()
 
-    def updateForce(self,socialForce,creatureB,dt):
-        self.force = socialForce(self,creatureB,dt)
+    def updateForce(self,socialForce, creatureB, objects,dt):
+        self.force = socialForce(self,creatureB,objects,dt)
 
     def updateVelocity(self,dt):
         self.velocity = self.velocity + self.force * dt

@@ -5,6 +5,7 @@ class Wall:
     def __init__(self, start, end):
         self.start = np.array(start)
         self.end = np.array(end)
+        self.vector = self.end - self.start
 
     def distance(self, location):
         length_squared = (self.start[0] - self.end[0]) ** 2 + (self.start[1] - self.end[1]) ** 2
@@ -23,7 +24,7 @@ class Wall:
   const float l2 = length_squared(v, w);  // i.e. |w-v|^2 -  avoid a sqrt
   if (l2 == 0.0) return distance(p, v);   // v == w case
   // Consider the line extending the segment, parameterized as v + t (w - v).
-  // We find projection of point p onto the line. 
+  // We find projection of point p onto the line.
   // It falls where t = [(p-v) . (w-v)] / |w-v|^2
   // We clamp t from [0,1] to handle points outside the segment vw.
   const float t = max(0, min(1, dot(p - v, w - v) / l2));
