@@ -14,7 +14,6 @@ class Wall:
 
     def projectedPoint(self, vector):
         proPoint = self.projectedVector(vector)+self.start
-        print('Projected Point: ',proPoint)
         return proPoint
 
     def nearestPoint(self,creatureLocation):

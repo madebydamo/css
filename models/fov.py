@@ -79,6 +79,8 @@ def agentObjectForce(creatureA, objects, dt, A=10, B=0.2):
 
 # acceleration to desired velocity
 def accelerationForce(creature, tau=0.5, desiredVelocity=1.333):
+    if tau <= 0:
+        tau = 0.01
     desiredDirection = creature.desiredDirection()
     desiredVelocity = desiredVelocity * desiredDirection
     return 1/tau * (desiredVelocity - creature.velocity)

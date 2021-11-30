@@ -2,11 +2,12 @@ import math
 import creature
 import numpy as np
 import time
-import evacuate as scene
+import crossing as scene
 import wall 
+import os
 
 # socialForce and objectForce are lambdas with distance as an input
-def simulate(socialForce, objectForce, timestep, duration, dosave=False):
+def simulate(socialForce, objectForce, timestep, duration, dosave=False, filename=f'./tmp/{time.time()}.npy'):
     # simulated field is 800x800"""
     savearray = []
     # initialization creatures
@@ -28,6 +29,7 @@ def simulate(socialForce, objectForce, timestep, duration, dosave=False):
             c.update(socialForce, creaturecopy, objects, timestep)
         for c in creatures:
             c.updateLocation()
+        # Collision detection and punishment assuming creatures have r=0.25
         for c in creatures:
             for c2 in creatures:
                 if np.linalg.norm(c.location - c2.location) < 0.5:
@@ -39,9 +41,16 @@ def simulate(socialForce, objectForce, timestep, duration, dosave=False):
     for c in creatures:
         rating += np.linalg.norm(c.startingLocation - c.location) / np.linalg.norm(c.startingLocation - c.finalDest)
     if(dosave):
-        np.save(f'./tmp/{time.time()}.npy', np.array(savearray))
+        if not os.path.exists(os.path.dirname(filename)):
+            os.makedirs(os.path.dirname(filename))
+        np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)                 
+        np.save(filename, np.array(savearray))
     return rating
 
+def simulateWithParams(socialForceWithParams, objectForce, timestep, duration, params, filename):
+    def socialForce(creatureA, creatures, objects, dt):
+        return socialForceWithParams(creatureA, creatures, objects, dt, params)
+    simulate(socialForce, objectForce, timestep, duration, True, filename)
 
 def calculateTroughput(creatures, timePassed):
     sum = 0
