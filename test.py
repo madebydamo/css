@@ -1,4 +1,4 @@
-import simple
+from models import simple
 import creature
 import wall
 import numpy as np
@@ -15,8 +15,10 @@ creatures = []
 for i in range(locations.shape[0]):
     creatures.append(creature.Creature(locations[i],goals[i]))
 
-wallStart = np.array([[0,0],[4,0],[4,4],[0,4],[1.5,1.5],[2.5,1.5],[2.5,2.5],[1.5,2.5]])
-wallEnd = np.array([[4,0],[4,4],[0,4],[0,0],[2.5,1.5],[2.5,2.5],[1.5,2.5],[1.5,1.5]])
+#wallStart = np.array([[0,0],[4,0],[4,4],[0,4],[1.5,1.5],[2.5,1.5],[2.5,2.5],[1.5,2.5]])
+#wallEnd = np.array([[4,0],[4,4],[0,4],[0,0],[2.5,1.5],[2.5,2.5],[1.5,2.5],[1.5,1.5]])
+wallStart = np.array([[0,2]])
+wallEnd = np.array([[4,2]])
 
 walls = []
 

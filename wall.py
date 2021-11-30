@@ -8,7 +8,7 @@ class Wall:
         self.vector = self.end - self.start
 
     def projectedVector(self,b):
-        a = self.start
+        a = self.vector
         ba = (a[0]*b[0] + a[1]*b[1])/(a[0]**2+a[1]**2) * a
         return ba
 
