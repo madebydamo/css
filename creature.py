@@ -1,8 +1,5 @@
-import math
 import numpy as np
 import random
-
-# run with python3 -m pipenv run python3 ui.py
 
 """
     Implementation of a single creature
@@ -11,6 +8,7 @@ import random
     and parameters which are to be decided upon by a genetic algorithm which minimizes a certain function and
     values which are the same for every creature in all simulations (maxVelocity)
 """
+
 
 class Creature:
     maxVelocity = 1.388888
@@ -38,29 +36,30 @@ class Creature:
         # params // shouldn't be needed here
         self.desiredVelocity = desiredVelocity
         self.tau = tau
+
     def __eq__(self, other):
         return self.seed == other.seed
 
-    def update(self,socialForce, creatureB, objects, dt):
-        if self.finished: # could also be reset after finishing path
+    def update(self, socialForce, creatureB, objects, dt):
+        if self.finished:
             return
 
-        self.updateForce(socialForce,creatureB,objects,dt)
+        self.updateForce(socialForce, creatureB, objects, dt)
         self.updateVelocity(dt)
         self.calculateLocation(dt)
 
         self.updateDestination()
 
-    def updateForce(self,socialForce, creatureB, objects,dt):
-        self.force = socialForce(self,creatureB,objects,dt)
+    def updateForce(self, socialForce, creatureB, objects, dt):
+        self.force = socialForce(self, creatureB, objects, dt)
 
-    def updateVelocity(self,dt):
+    def updateVelocity(self, dt):
         self.velocity = self.velocity + self.force * dt
         if np.linalg.norm(self.velocity) > self.maxVelocity:
             unitVec = normalize(self.velocity)
             self.velocity = unitVec * self.maxVelocity
 
-    def calculateLocation(self,dt):
+    def calculateLocation(self, dt):
         self.nextLocation = self.location + self.velocity*dt
 
     def updateLocation(self):
@@ -86,15 +85,11 @@ class Creature:
                 else:
                     self.finished = True
 
-
     def __str__(self):
         return f"loc:{self.location}, force:{self.force}"
 
-    def asarray(self):
+    def asArray(self):
         return [self.location[0], self.location[1], self.force[0], self.force[1]]
-
-
-
 
 def normalize(v):
     norm = np.linalg.norm(v)

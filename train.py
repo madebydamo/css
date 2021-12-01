@@ -1,13 +1,16 @@
 import random
 from deap import creator, base, tools, algorithms
+import time
+
 from models import simple as simulationcase
 import simulation
-import time
+
 
 def evalData(params):
     def socialForce(creatureA,creatures,objects,dt):
-        return simulationcase.socialForceWithParams(creatureA, creatures,objects, dt, params)
+        return simulationcase.socialForceWithParams(creatureA, creatures, objects, dt, params)
     return [simulation.simulate(socialForce, None, 1.0/30, 10, False)]
+
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMax)
@@ -27,12 +30,14 @@ population = toolbox.population(n=100)
 
 NGEN=100
 print("start training")
-dirname = f'./tmp/evol{time.time()}'
+dirName = f'./tmp/evol{time.time()}'
 for gen in range(NGEN):
     offspring = algorithms.varAnd(population, toolbox, cxpb=0.5, mutpb=0.1)
     fits = toolbox.map(toolbox.evaluate, offspring)
+
     for fit, ind in zip(fits, offspring):
         ind.fitness.values = fit
+
     print(f"gen {gen} trained")
     population = toolbox.select(offspring, k=len(population))
     print(tools.selBest(population, k=1))
@@ -42,4 +47,4 @@ for gen in range(NGEN):
         1.0/30,
         10,
         tools.selBest(population, k=1)[0],
-        f'{dirname}/gen{gen}.npy'))
+        f'{dirName}/gen{gen}.npy'))

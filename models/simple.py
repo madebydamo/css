@@ -1,5 +1,3 @@
-import creature
-import math
 import numpy as np
 from numpy.linalg import norm
 
@@ -25,6 +23,7 @@ def agentDistanceForceAB(creatureA, creatureB, dt, A, B):
     velocity = creatureB.velocity - creatureA.velocity
     distance = creatureA.location - creatureB.location
     distanceByVelocity = velocity * dt  # yab
+
     b = np.sqrt(norm(distance) + norm(distance - distanceByVelocity) ** 2 - norm(distanceByVelocity) ** 2) / 2
     return A * np.exp(-b / B) * (norm(distance) + norm(distance - distanceByVelocity)) / (2 * b) * 0.5 * (
                 distance / norm(distance) + (distance - distanceByVelocity) / norm(distance - distanceByVelocity))
@@ -44,18 +43,17 @@ def agentObjectForceAB(creatureA, objectI, dt, A,B):
     distanceVector = creatureA.location - nearestPoint
     velocity = -creatureA.velocity
     distanceByVelocity = velocity*dt
-    distance = distanceVector
-#    b = np.sqrt(norm(distance) + norm(distance - distanceByVelocity) ** 2 - norm(distanceByVelocity) ** 2) / 2
-    return A * np.exp(-norm(distance) / B) * (norm(distance) + norm(distance - distanceByVelocity)) / (2 * norm(distance)) * 0.5 * (
-                distance / norm(distance) + (distance - distanceByVelocity) / norm(distance - distanceByVelocity))
+
+    return A * np.exp(-norm(distanceVector) / B) * (norm(distanceVector) + norm(distanceVector - distanceByVelocity)) / (2 * norm(distanceVector)) * 0.5 * (
+                distanceVector / norm(distanceVector) + (distanceVector - distanceByVelocity) / norm(distanceVector - distanceByVelocity))
 
 
 def agentObjectForce(creatureA, objects, dt, A=10, B=0.2):
     forceA = np.zeros(2)
     for objectI in objects:
         forceA += agentObjectForceAB(creatureA,objectI,dt,A,B)
-        #print('Wall Nr° {}, Start{},{} & End {},{} , Force = {}'.format(index,objectI.start[0],objectI.start[1], objectI.end[0], objectI.end[1], np.mean(forceAI)))
     return forceA
+
 
 # acceleration to desired velocity
 def accelerationForce(creature, tau=0.5, desiredVelocity=1.333):

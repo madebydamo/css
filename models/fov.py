@@ -1,4 +1,3 @@
-import creature
 import math
 import numpy as np
 from numpy.linalg import norm

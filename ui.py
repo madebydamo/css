@@ -10,6 +10,7 @@ import simulation
         - additional functions to convert between window and world space
 """
 
+
 class UI:
     def __init__(self, windowWidth, windowHeight, worldWidth, worldHeight):
         InitWindow(windowWidth, windowHeight, b"Social Forces Model")
@@ -33,10 +34,12 @@ class UI:
     def drawWindowFromArray(self, creatureArray, objectArray):
         BeginDrawing()
         ClearBackground(RAYWHITE)
+
         for objectEl in objectArray:
             (pos1X, pos1Y) = self.worldToWindow(objectEl[0][0], objectEl[0][1])
             (pos2X, pos2Y) = self.worldToWindow(objectEl[1][0], objectEl[1][1])
             DrawLine(pos1X, pos1Y, pos2X, pos2Y, BLACK)
+
         for creature in creatureArray:
             print(creature)
             (posX, posY) = self.worldToWindow(creature[0], creature[1])
@@ -54,7 +57,7 @@ class UI:
 
         EndDrawing()
 
-    def drawWindow(self, creatures, walls = [], timePassed = 0):
+    def drawWindow(self, creatures, walls=[], timePassed=0):
         BeginDrawing()
         ClearBackground(RAYWHITE)
 
@@ -104,25 +107,8 @@ def showSimulation(filepath):
         i += 1
     ui.closeWindow()
 
-def testUI():
-        # #locations = np.array([[1,1],[1,1.1],[3,1]])
-        # #goals = np.array([[1,9],[1,9.1],[3,9]])
-        # locations = np.array([[2.2,1],[2,9]])
-        # goals = np.array([[[2.2,11],[3,11]],[[2,1],[2,9],[2,1]]])
-        # wall_positions = np.array([[2.5,0.5],[2.5,10]])
-        #
-        # """a = creature.Creature(locations[0],goals[0])
-        # b = creature.Creature(locations[1],goals[1])
-        # creatures = [a, b]"""
-        #
-        # creatures = []
-        # for i in range(locations.ndim):
-        #     creatures.append(creature.Creature(locations[i],goals[i]))
-        #
-        # walls = []
-        # for i in range(0, wall_positions.ndim, 2):
-        #     walls.append(wall.Wall(wall_positions[i], wall_positions[i+1]))
 
+def testUI():
     locations = np.array([[0.2,1.2]])
     goals = np.array([[[3.8,3.8]]])
     #locations = np.array([[1,1],[9,9],[1,9]])
@@ -146,8 +132,6 @@ def testUI():
     for i in range(wallStart.shape[0]):
         walls.append(wall.Wall(wallStart[i],wallEnd[i]))
 
-
-
     ui = UI(800, 800, 5, 5)
 
     timePassed = 0
@@ -157,7 +141,7 @@ def testUI():
 
         dt = 0.01 # GetFrameTime()
 
-        for j,robot in enumerate(creatures):
+        for robot in creatures:
             robot.update(simple.socialForce, creatures, walls, dt)
 
         for robot in creatures:
@@ -168,10 +152,11 @@ def testUI():
     ui.closeWindow()
     print(simulation.calculateTroughput(creatures, timePassed))
 
+
 if __name__ == "__main__":
     from models import simple
     import sys
-    if(len(sys.argv) == 2):
+    if len(sys.argv) == 2:
         showSimulation(sys.argv[1])
     else:
         testUI()

@@ -23,6 +23,6 @@ wallEnd = np.array([[4,2]])
 walls = []
 
 for i in range(wallStart.shape[0]):
-    walls.append(wall.Wall(wallStart[i],wallEnd[i]))
+    walls.append(wall.Wall(wallStart[i], wallEnd[i]))
 
-plotCreatures(creatures,walls,3000,0.01)
+plotCreatures(creatures, walls, 3000, 0.01)

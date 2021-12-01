@@ -1,22 +1,22 @@
 import numpy as np
 import math
 
+
 class Wall:
     def __init__(self, start, end):
         self.start = start
         self.end = end
         self.vector = self.end - self.start
 
-    def projectedVector(self,b):
+    def projectedVector(self, b):
         a = self.vector
         ba = (a[0]*b[0] + a[1]*b[1])/(a[0]**2+a[1]**2) * a
         return ba
 
     def projectedPoint(self, vector):
-        proPoint = self.projectedVector(vector)+self.start
-        return proPoint
+        return self.projectedVector(vector)+self.start
 
-    def nearestPoint(self,creatureLocation):
+    def nearestPoint(self, creatureLocation):
         creatureVector = creatureLocation - self.start
         projectedPoint = self.projectedPoint(creatureVector)
 
@@ -42,5 +42,5 @@ class Wall:
         projection = self.start + t * (self.end - self.start)
         return math.sqrt((projection[0] - location[0]) ** 2 + (projection[1] - location[1]) ** 2)
 
-    def asarray(self):
+    def asArray(self):
         return [[self.start[0], self.start[1]], [self.end[0], self.end[1]]]
