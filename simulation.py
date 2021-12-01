@@ -50,7 +50,7 @@ def simulate(socialForce, objectForce, timestep, duration, dosave=False, filenam
 def simulateWithParams(socialForceWithParams, objectForce, timestep, duration, params, filename):
     def socialForce(creatureA, creatures, objects, dt):
         return socialForceWithParams(creatureA, creatures, objects, dt, params)
-    simulate(socialForce, objectForce, timestep, duration, True, filename)
+    return simulate(socialForce, objectForce, timestep, duration, True, filename)
 
 def calculateTroughput(creatures, timePassed):
     sum = 0
