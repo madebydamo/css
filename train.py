@@ -1,6 +1,7 @@
 import random
 from deap import creator, base, tools, algorithms
 import time
+from scoop import futures
 
 from models import simple as simulationcase
 import simulation
@@ -26,9 +27,11 @@ toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
 toolbox.register("select", tools.selTournament, tournsize=3)
 
-population = toolbox.population(n=100)
+toolbox.register("map", futures.map)
 
-NGEN=100
+population = toolbox.population(n=50)
+
+NGEN = 50
 print("start training")
 dirName = f'./tmp/evol{time.time()}'
 for gen in range(NGEN):
