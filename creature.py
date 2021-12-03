@@ -31,7 +31,7 @@ class Creature:
         self.finished = False
 
         self.repeating = repeating
-        self.seed = random.randbytes(4)
+        self.seed = random.randint(0, 1 << 31)
 
         # params // shouldn't be needed here
         self.desiredVelocity = desiredVelocity
