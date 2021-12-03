@@ -23,6 +23,6 @@ def creatures():
     for i in range(0, 10):
         goal = np.random.random((2)) * np.asarray([4, 10])
         location = np.random.random((2)) * np.asarray([4, 10]) + np.asarray([6, 0])
-        creatures.append(creature.Creature(location, np.asarray([middle1, goal])))
+        creatures.append(creature.Creature(location, np.asarray([middle2, goal])))
 
     return creatures

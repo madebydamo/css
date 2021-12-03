@@ -4,7 +4,7 @@ import os
 
 import creature
 import wall
-import crossing as scene
+import evacuate as scene
 
 
 # socialForce and objectForce are lambdas with distance as an input

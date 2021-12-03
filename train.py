@@ -9,6 +9,7 @@ import numpy as np
 from models import simple as simulationcase
 import simulation
 
+# run with python -m scoop train.py
 
 def evalData(params):
     def socialForce(creatureA,creatures,objects,dt):
@@ -32,12 +33,12 @@ if __name__ == '__main__':
     toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
     toolbox.register("select", tools.selTournament, tournsize=3)
 
-    population = toolbox.population(n=32)
+    population = toolbox.population(n=75)
 
     params = []
     fitness = []
 
-    NGEN = 5
+    NGEN = 100
     print("start training")
     dirName = f'./tmp/evol{time.time()}'
     for gen in range(NGEN):
