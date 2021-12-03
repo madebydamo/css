@@ -38,7 +38,7 @@ def agentDistanceForce(creatureA, creatures, dt, A=2.1 ,B=0.3):
     return forceA
 
 
-def agentObjectForceAB(creatureA, objectI, dt, A,B):
+def agentObjectForceAB(creatureA, objectI, dt, A, B):
     nearestPoint = objectI.nearestPoint(creatureA.location)
     distanceVector = creatureA.location - nearestPoint
     velocity = -creatureA.velocity

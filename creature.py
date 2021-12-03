@@ -20,7 +20,7 @@ class Creature:
     numberOfRounds = 0
 
     #PRE: location = np.array([x,y]), goal = np.array([goalX,goalY])
-    def __init__(self, location, path, desiredVelocity = 1.333, tau = 0.5, repeating = False):
+    def __init__(self, location, path, desiredVelocity=1.333, tau=0.5, repeating=False):
         self.location = location
         self.startingLocation = location
 
@@ -40,18 +40,18 @@ class Creature:
     def __eq__(self, other):
         return self.seed == other.seed
 
-    def update(self, socialForce, creatureB, objects, dt):
+    def update(self, socialForce, creatures, objects, dt):
         if self.finished:
             return
 
-        self.updateForce(socialForce, creatureB, objects, dt)
+        self.updateForce(socialForce, creatures, objects, dt)
         self.updateVelocity(dt)
         self.calculateLocation(dt)
 
         self.updateDestination()
 
-    def updateForce(self, socialForce, creatureB, objects, dt):
-        self.force = socialForce(self, creatureB, objects, dt)
+    def updateForce(self, socialForce, creatures, objects, dt):
+        self.force = socialForce(self, creatures, objects, dt)
 
     def updateVelocity(self, dt):
         self.velocity = self.velocity + self.force * dt
