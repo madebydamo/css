@@ -2,11 +2,9 @@ import numpy as np
 import random
 
 """
-    Implementation of a single creature
+    Implementation of a single creature for our simulation
+    The creature it self does not implement the different function for calculating forces which are given trough models
     
-    Differentiate between variables which are manipulated in the simulation (position, velocity, forces, ...)
-    and parameters which are to be decided upon by a genetic algorithm which minimizes a certain function and
-    values which are the same for every creature in all simulations (maxVelocity)
 """
 
 
@@ -14,23 +12,28 @@ class Creature:
     maxVelocity = 1.388888
     force = np.zeros(2)
     velocity = np.zeros(2)
+
     nextLocation = np.zeros(2)
+    nextVelocity = np.zeros(2)
 
     finished = False
-    numberOfRounds = 0
+    numberOfRounds = 0 # accumulates number of repetitions
 
     #PRE: location = np.array([x,y]), goal = np.array([goalX,goalY])
     def __init__(self, location, path, desiredVelocity=1.333, tau=0.5, repeating=False):
         self.location = location
         self.startingLocation = location
 
+        # variables for path and destination
         self.currentDest = path[0]
         self.finalDest = path[-1]
         self.path = path
         self.pathIdx = 0
         self.finished = False
 
+        # repeats path
         self.repeating = repeating
+
         self.seed = random.randint(0, 1 << 31)
 
         # params // shouldn't be needed here
@@ -40,6 +43,8 @@ class Creature:
     def __eq__(self, other):
         return self.seed == other.seed
 
+    # calculates the next position, velocity and already updates forces
+    # also updates the current destination
     def update(self, socialForce, creatures, objects, dt):
         if self.finished:
             return
@@ -54,20 +59,27 @@ class Creature:
         self.force = socialForce(self, creatures, objects, dt)
 
     def updateVelocity(self, dt):
-        self.velocity = self.velocity + self.force * dt
-        if np.linalg.norm(self.velocity) > self.maxVelocity:
+        self.nextVelocity = self.velocity + self.force * dt
+        if np.linalg.norm(self.nextVelocity) > self.maxVelocity:# capped at max velocity
             unitVec = normalize(self.velocity)
-            self.velocity = unitVec * self.maxVelocity
+            self.nextVelocity = unitVec * self.maxVelocity
 
     def calculateLocation(self, dt):
-        self.nextLocation = self.location + self.velocity*dt
+        self.nextLocation = self.location + self.nextVelocity*dt
 
+    """ 
+    actually now updates the location and velocity. This is done so that the ordering in which creatures are updated
+    doesn't play a role. Forces are not accessed outside of the creature they belong to so not necessary to have a nextForce 
+    """
     def updateLocation(self):
+        self.velocity = self.nextVelocity
         self.location = self.nextLocation
 
+    # calculates a vector pointing into the direction of our next destination (from viewpoint of creature)
     def desiredDirection(self):
         return normalize(self.currentDest-self.location)
 
+    # Updates the destination to the next one on the path if the current destination has been reached
     def updateDestination(self):
         if np.linalg.norm(self.currentDest-self.location) < 0.5: # reached current dest
             self.pathIdx += 1
@@ -76,12 +88,14 @@ class Creature:
             else:
                 # finished round
                 self.numberOfRounds += 1
-                if self.repeating:
+
+                self.force = np.zeros(2)
+                self.velocity = np.zeros(2)
+                self.nextVelocity = np.zeros(2)
+
+                if self.repeating:# go back to start and walk the same route again
                     self.location = self.startingLocation
                     self.nextLocation = self.location
-
-                    self.force = np.zeros(2)
-                    self.velocity = np.zeros(2)
                 else:
                     self.finished = True
 
