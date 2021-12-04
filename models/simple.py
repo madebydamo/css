@@ -25,6 +25,16 @@ def agentDistanceForceAB(creatureA, creatureB, dt, A, B):
     distanceByVelocity = velocity * dt  # yab
 
     b = np.sqrt(norm(distance) + norm(distance - distanceByVelocity) ** 2 - norm(distanceByVelocity) ** 2) / 2
+
+    if B == 0:
+        return np.zeros(2)
+
+    """if B == 0 or b == 0 or norm(distance) == 0 or norm(distance - distanceByVelocity) == 0:
+        print("B: "+str(B))
+        print("b"+str(b))
+        print("norm(dist)" + str(norm(distance)))
+        print("norm(distVec-distByVel)"+str(norm(distance - distanceByVelocity)))"""
+
     return A * np.exp(-b / B) * (norm(distance) + norm(distance - distanceByVelocity)) / (2 * b) * 0.5 * (
                 distance / norm(distance) + (distance - distanceByVelocity) / norm(distance - distanceByVelocity))
 
@@ -44,8 +54,16 @@ def agentObjectForceAB(creatureA, objectI, dt, A, B):
     velocity = -creatureA.velocity
     distanceByVelocity = velocity*dt
 
+    if B == 0:
+        return np.zeros(2)
+
+    """if B == 0 or norm(distanceVector) == 0 or norm(distanceVector - distanceByVelocity) == 0:
+        print("B: "+str(B))
+        print("norm(distVec)"+str(norm(distanceVector)))
+        print("norm(distVec-distByVel)"+str(norm(distanceVector - distanceByVelocity)))"""
+
     return A * np.exp(-norm(distanceVector) / B) * (norm(distanceVector) + norm(distanceVector - distanceByVelocity)) / (2 * norm(distanceVector)) * 0.5 * (
-                distanceVector / norm(distanceVector) + (distanceVector - distanceByVelocity) / norm(distanceVector - distanceByVelocity))
+            distanceVector / norm(distanceVector) + (distanceVector - distanceByVelocity) / norm(distanceVector - distanceByVelocity))
 
 
 def agentObjectForce(creatureA, objects, dt, A=10, B=0.2):

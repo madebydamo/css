@@ -107,4 +107,6 @@ class Creature:
 
 def normalize(v):
     norm = np.linalg.norm(v)
+    if norm == 0:
+        return np.zeros(2)
     return v/norm

@@ -33,7 +33,7 @@ if __name__ == '__main__':
     toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
     toolbox.register("select", tools.selTournament, tournsize=3)
 
-    population = toolbox.population(n=75)
+    population = toolbox.population(n=100)
 
     params = []
     fitness = []
