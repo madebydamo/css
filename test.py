@@ -3,9 +3,9 @@ import creature
 import wall
 import numpy as np
 import matplotlib.pyplot as plt
-from plots import plotCreatures
+from plots import plotCreatures, collectData, plotCreature
 
-locations = np.array([[1.1,1]])
+"""locations = np.array([[1.1,1]])
 goals = np.array([[9,9]])
 
 creatures = []
@@ -20,11 +20,21 @@ wallEnd = np.array([[4,0],[4,4],[0,4],[0,0],[2.5,1.5],[2.5,2.5],[1.5,2.5],[1.5,1
 walls = []
 
 for i in range(wallStart.shape[0]):
-    walls.append(wall.Wall(wallStart[i], wallEnd[i]))
+    walls.append(wall.Wall(wallStart[i], wallEnd[i]))"""
 
-"""import lane, bottlekneck
+import lane, bottlekneck, evacuate
+
+simulationDuration = 30
+dt = 0.01
+numberOfTimesteps = int(simulationDuration / dt)
 
 creatures = bottlekneck.creatures()
-walls = bottlekneck.objects()"""
+walls = bottlekneck.objects()
 
-plotCreatures(creatures, walls, 3000, 0.01)
+#plotCreatures(creatures, walls, numberOfTimesteps, dt)
+
+
+locations, velocities = collectData(creatures, walls, numberOfTimesteps, dt)
+
+for i, creature in enumerate(creatures):
+    plotCreature(i, walls, locations, velocities, numberOfTimesteps, dt)

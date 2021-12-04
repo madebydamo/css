@@ -121,8 +121,8 @@ def showSimulation(filepath):
 def testUI():
     import lane, bottlekneck, evacuate, crossing
 
-    creatures = lane.creatures()# or bottlekneck, evacuate, crossing
-    walls = lane.objects()
+    creatures = bottlekneck.creatures()# or bottlekneck, evacuate, crossing
+    walls = bottlekneck.objects()
 
     ui = UI(800, 800, 10, 10)
 
