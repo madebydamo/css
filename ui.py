@@ -74,7 +74,7 @@ class UI:
                 continue
 
             (posX, posY) = self.worldToWindow(creature.location[0], creature.location[1])
-            DrawCircle(posX, posY, 5, BLACK)
+            DrawCircle(posX, posY, self.creatureRadius, BLACK)
 
             # draw line showing current velocity
             normalizedVel = (creature.velocity / creature.maxVelocity) * 1.25
