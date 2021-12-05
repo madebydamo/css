@@ -119,10 +119,10 @@ def showSimulation(filepath):
 
 # example scene that will be played when running ui.py without any additional parameters
 def testUI():
-    import lane, bottlekneck, evacuate, crossing
+    import lane, bottleneck, evacuate, crossing
 
-    creatures = bottlekneck.creatures()# or bottlekneck, evacuate, crossing
-    walls = bottlekneck.objects()
+    creatures = bottleneck.creatures()# or bottleneck, evacuate, crossing
+    walls = bottleneck.objects()
 
     ui = UI(800, 800, 10, 10)
 
