@@ -3,7 +3,11 @@ import creature
 import wall
 import numpy as np
 import matplotlib.pyplot as plt
+import time
+
 from plots import plotCreatures, collectData, plotCreature
+
+
 
 """locations = np.array([[1.1,1]])
 goals = np.array([[9,9]])
@@ -36,5 +40,6 @@ walls = bottlekneck.objects()
 
 locations, velocities = collectData(creatures, walls, numberOfTimesteps, dt)
 
+dirName = f'./tmp/eval{time.time()}'
 for i, creature in enumerate(creatures):
     plotCreature(i, walls, locations, velocities, numberOfTimesteps, dt)
