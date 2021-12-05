@@ -26,8 +26,8 @@ def socialForce(creatureA,creatures, objects, dt):
 
 def socialForceWithParams(creatureA,creatures, objects, dt, params):
     return (accelerationForce(creatureA, tau=params[2])
-            + agentDistanceForceWithFOV(creatureA,creatures,dt, A=params[0], B=params[1], phi=params[3], w=params[4])
-            + agentObjectForce(creatureA, objects,dt))
+            + agentDistanceForceWithFOV(creatureA,creatures,dt, A=params[0], B=params[1], phi=params[5], w=params[6])
+            + agentObjectForce(creatureA, objects, dt, A=params[3], B=params[4]))
 
 
 def agentDistanceForce(creatureA, creatures, dt, A=2.1 ,B=0.3):
