@@ -41,6 +41,7 @@ class Creature:
 
     # calculates the next position, velocity and already updates forces
     # also updates the current destination
+    # socialForce is a function f:(creature, array of creatures, array of objects, timestep)
     def update(self, socialForce, creatures, objects, dt):
         if self.finished:
             return
