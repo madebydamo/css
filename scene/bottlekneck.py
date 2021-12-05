@@ -1,4 +1,4 @@
-import wall
+from scene import wall
 import creature
 import numpy as np
 

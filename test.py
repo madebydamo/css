@@ -1,9 +1,9 @@
 from models import simple
 import creature
-import wall
+from scene import wall
 import numpy as np
 import matplotlib.pyplot as plt
-from plots import plotCreatures, collectData, plotCreature
+from plot.plots import plotCreatures, collectData, plotCreature
 
 """locations = np.array([[1.1,1]])
 goals = np.array([[9,9]])
@@ -22,7 +22,7 @@ walls = []
 for i in range(wallStart.shape[0]):
     walls.append(wall.Wall(wallStart[i], wallEnd[i]))"""
 
-import lane, bottlekneck, evacuate
+from scene import lane, bottlekneck, evacuate
 
 simulationDuration = 30
 dt = 0.01

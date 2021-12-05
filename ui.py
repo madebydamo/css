@@ -1,9 +1,8 @@
 from raylib import *
 import numpy as np
-
 import creature
-import wall
 import simulation
+from scene import wall
 
 """
     Class used to show a simulation on a window.

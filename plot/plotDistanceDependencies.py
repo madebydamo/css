@@ -1,7 +1,7 @@
 import models.simple as simple
 import numpy as np
 import matplotlib.pyplot as plt
-import wall
+from scene import wall
 import creature
 
 

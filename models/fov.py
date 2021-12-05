@@ -3,11 +3,13 @@ import numpy as np
 from numpy.linalg import norm
 
 import simple
+from models.shared import agentDistanceForceAB, agentObjectForce, accelerationForce
 
 """
     Implements the different forces
     Additionally there is also implementations of the forces dependent on a field of view of a creature
 """
+paramnr = 7
 
 # limits the influence of a force depending if its viewable
 def limitForce(creatureA, force, phi, w):
@@ -20,7 +22,7 @@ def limitForce(creatureA, force, phi, w):
 def socialForce(creatureA,creatures, objects, dt):
     return (simple.accelerationForce(creatureA)
             + agentDistanceForceWithFOV(creatureA,creatures,dt)
-            + simple.agentObjectForce(creatureA, objects,dt))
+            + agentObjectForce(creatureA, objects,dt))
 
 
 def socialForceWithParams(creatureA,creatures, objects, dt, params):
@@ -29,13 +31,12 @@ def socialForceWithParams(creatureA,creatures, objects, dt, params):
             + simple.agentObjectForce(creatureA, objects,dt))
 
 
-def agentDistanceForceAB(creatureA, creatureB, dt, A, B):
-    velocity = creatureB.velocity - creatureA.velocity
-    distance = creatureA.location - creatureB.location
-    distanceByVelocity = velocity * dt  # yab
-    b = np.sqrt(norm(distance) + norm(distance - distanceByVelocity) ** 2 - norm(distanceByVelocity) ** 2) / 2
-    return A * np.exp(-b / B) * (norm(distance) + norm(distance - distanceByVelocity)) / (2 * b) * 0.5 * (
-                distance / norm(distance) + (distance - distanceByVelocity) / norm(distance - distanceByVelocity))
+def agentDistanceForce(creatureA, creatures, dt, A=2.1 ,B=0.3):
+    forceA = np.zeros(2)
+    for creatureI in creatures:
+        if creatureI is not creatureA:
+            forceA += agentDistanceForceAB(creatureA, creatureI, dt, A, B)
+    return forceA
 
 
 # f_{alpha beta}, the force between two agents

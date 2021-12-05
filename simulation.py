@@ -3,8 +3,8 @@ import time
 import os
 
 import creature
-import wall
-import evacuate as scene
+from scene import wall
+from scene import evacuate as scene
 
 
 # socialForce and objectForce are lambdas with distance as an input
