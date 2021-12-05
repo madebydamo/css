@@ -9,7 +9,8 @@ if __name__ == "__main__":
         array = np.load(filepath, allow_pickle=True)
 
         if array.ndim == 3:
-            parameterNames = [r'interaction strength A of $f_{\alpha\beta}$',r'interaction range B of $f_{\alpha\beta}$',r'relaxation time $\tau$',r'interaction strength A of $f_{\alpha i}$',r'interaction range B of $f_{\alpha i}$',r'Angle of encounter $\varphi$',r'prefactor $w$']
+            plt.figure(figsize=(7,4))
+            parameterNames = [r'interaction strength A of $f_{\alpha\beta}$',r'interaction range B of $f_{\alpha\beta}$',r'relaxation time $\tau$',r'interaction strength C of $f_{\alpha i}$',r'interaction range D of $f_{\alpha i}$',r'Angle of encounter $\varphi$',r'prefactor $w$']
             for i in range(0, array.shape[2]):
                 x_axis = np.linspace(0, array.shape[0], array.shape[0])
                 y_axis = np.zeros(array.shape[0])
@@ -19,6 +20,8 @@ if __name__ == "__main__":
             plt.xlabel('Generations')
             plt.ylabel('Parameter Value') 
             plt.legend(loc='best')   
+            plt.savefig('trainedParameters.svg',format='svg')
+            plt.show()
         else:
             fitnessNames = ['Destination Closeness','Collision Prevention']
             x_axis = np.linspace(0, array.shape[0], array.shape[0])
@@ -26,7 +29,7 @@ if __name__ == "__main__":
             destinationFitness = array[:,0]
             collisionFitness = array[:,1]
 
-            fig, ax1 = plt.subplots()
+            fig, ax1 = plt.subplots(figsize=(7,4))
             ax1.set_xlabel('Generations')
             ax1.set_ylabel('Destination Closeness Fitness', color=colors[0])
             ax1.plot(x_axis, destinationFitness, color=colors[0])
@@ -37,5 +40,7 @@ if __name__ == "__main__":
             ax2.plot(x_axis, collisionFitness, color=colors[1])
             ax2.tick_params(axis='y', labelcolor=colors[1])
             fig.tight_layout()
+            plt.savefig('traindedFitness.svg',format='svg')
+            plt.show()
 
-        plt.show()
+        
