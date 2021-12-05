@@ -14,9 +14,9 @@ import simulation
 def evalData(params):
     def socialForce(creatureA,creatures,objects,dt):
         return simulationcase.socialForceWithParams(creatureA, creatures, objects, dt, params)
-    return [simulation.simulate(socialForce, None, 1.0/30, 10, False)]
+    return simulation.simulate(socialForce, None, 1.0/30, 10, False)
 
-creator.create("FitnessMax", base.Fitness, weights=(1.0,))
+creator.create("FitnessMax", base.Fitness, weights=(100.0, -1.0))
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
