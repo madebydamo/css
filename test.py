@@ -26,14 +26,14 @@ walls = []
 for i in range(wallStart.shape[0]):
     walls.append(wall.Wall(wallStart[i], wallEnd[i]))"""
 
-from scene import lane, bottlekneck, evacuate
+from scene import lane, bottleneck, evacuate
 
 simulationDuration = 30
 dt = 0.01
 numberOfTimesteps = int(simulationDuration / dt)
 
-creatures = bottlekneck.creatures()
-walls = bottlekneck.objects()
+creatures = bottleneck.creatures()
+walls = bottleneck.objects()
 
 #plotCreatures(creatures, walls, numberOfTimesteps, dt)
 
