@@ -4,7 +4,7 @@ import os
 
 import creature
 from scene import wall
-from scene import evacuate as scene #selected scene. Can be {evacuate, crossing, lane, bottlekneck}
+from scene import evacuate as scene #select scene. Can be {evacuate, crossing, lane, bottleneck}
 
 
 # force are lambdas with distance as an input
