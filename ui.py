@@ -47,7 +47,7 @@ class UI:
             DrawLine(pos1X, pos1Y, pos2X, pos2Y, BLACK)
 
         for creature in creatureArray:
-            print(creature)
+            # print(creature)
             (posX, posY) = self.worldToWindow(creature[0], creature[1])
             DrawCircle(posX, posY, self.creatureRadius, BLACK) # position
 
