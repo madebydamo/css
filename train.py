@@ -6,7 +6,7 @@ from deap import creator, base, tools, algorithms
 from scoop import futures
 import numpy as np
 
-from models import fov as simulationcase
+from models import simple as simulationcase #select model. Can be {simple, fov}
 import simulation
 
 # run with python -m scoop train.py

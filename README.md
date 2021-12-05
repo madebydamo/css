@@ -9,7 +9,7 @@ pipenv shell
 Before running a simulation you can chose between different models (in models folder) and different scenes (in scene folder)
 The model must be set in train.py. Import therefore the desired model like this:
 ```
-from models import simple as simulationcase#select model. Can be {simple, fov}
+from models import simple as simulationcase #select model. Can be {simple, fov}
 ```
 The scene must be set in simulation.py. Import therefore the desired model like this:
 ```
@@ -24,4 +24,5 @@ To view a simulation call the following code: (path to npy file must be modified
 ```
 pthon3 ui.py ./tmp/evol.../genxy.npy
 ```
-
+Already generated data is in ./trained folder
+For plotting data, look in the plot folder
