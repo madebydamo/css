@@ -15,7 +15,7 @@ import simulation
 def evalData(params):
     def socialForce(creatureA,creatures,objects,dt):
         return simulationcase.socialForceWithParams(creatureA, creatures, objects, dt, params)
-    return simulation.simulate(socialForce, None, 1.0/30, 10, False)
+    return simulation.simulate(socialForce, 1.0/30, 10, False)
 
 # setup of DEAP
 creator.create("FitnessMax", base.Fitness, weights=(100.0, -1.0))
@@ -56,7 +56,6 @@ if __name__ == '__main__':
         params.append(tools.selBest(population, k=1))
         fitness.append(simulation.simulateWithParams(
             simulationcase.socialForceWithParams,
-            None,
             1.0/30,
             10,
             tools.selBest(population, k=1)[0],
@@ -65,7 +64,6 @@ if __name__ == '__main__':
         print(tools.selBest(population, k=1))
         print(simulation.simulateWithParams(
             simulationcase.socialForceWithParams,
-            None,
             1.0/30,
             10,
             tools.selBest(population, k=1)[0],

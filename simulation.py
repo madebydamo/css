@@ -7,8 +7,8 @@ from scene import wall
 from scene import evacuate as scene #selected scene. Can be {evacuate, crossing, lane, bottlekneck}
 
 
-# socialForce and objectForce are lambdas with distance as an input
-def simulate(socialForce, objectForce, timestep, duration, dosave=False, filename=f'./tmp/{time.time()}.npy'):
+# force are lambdas with distance as an input
+def simulate(force, timestep, duration, dosave=False, filename=f'./tmp/{time.time()}.npy'):
     savearray = []
     # initialization creatures
     creatures = scene.creatures()
@@ -27,7 +27,7 @@ def simulate(socialForce, objectForce, timestep, duration, dosave=False, filenam
                 destinationRating+=1 + 1/i
                 creatures.remove(c)
                 creatureCopy.remove(c)
-            c.update(socialForce, creatureCopy, objects, timestep)
+            c.update(force, creatureCopy, objects, timestep)
 
         for c in creatures:
             c.updateLocation()
@@ -55,7 +55,7 @@ def simulate(socialForce, objectForce, timestep, duration, dosave=False, filenam
 
 
 # runs a simulation with the desired params set for the creature
-def simulateWithParams(socialForceWithParams, objectForce, timestep, duration, params, filename):
-    def socialForce(creatureA, creatures, objects, dt):
-        return socialForceWithParams(creatureA, creatures, objects, dt, params)
-    return simulate(socialForce, objectForce, timestep, duration, True, filename)
+def simulateWithParams(forceWithParams, timestep, duration, params, filename):
+    def force(creatureA, creatures, objects, dt):
+        return forceWithParams(creatureA, creatures, objects, dt, params)
+    return simulate(force, timestep, duration, True, filename)
