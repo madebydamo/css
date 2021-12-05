@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os, time
 
 from models import simple
 
@@ -14,14 +15,18 @@ def plotCreatures(creatures, objects, numberOfTimesteps, dt):
 
     plt.show()
 
-def plotCreature(idx, objects, locations, velocities, numberOfTimesteps, dt):
+def plotCreature(idx, objects, locations, velocities, numberOfTimesteps, dt, dirName):
     fig, ax = plt.subplots(ncols=2)
 
     plotObjects(ax, objects)
     plotLocation(ax, idx, locations)
     plotVelocity(ax, idx, velocities, numberOfTimesteps, dt)
 
-    plt.show()
+    filename = f'{dirName}/creature{idx}.png'
+    if not os.path.exists(os.path.dirname(filename)):
+        os.makedirs(os.path.dirname(filename))
+
+    plt.savefig(filename)
 
 
 def collectData(creatures, objects, numberOfTimesteps, dt):
