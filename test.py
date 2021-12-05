@@ -42,4 +42,4 @@ locations, velocities = collectData(creatures, walls, numberOfTimesteps, dt)
 
 dirName = f'./tmp/eval{time.time()}'
 for i, creature in enumerate(creatures):
-    plotCreature(i, walls, locations, velocities, numberOfTimesteps, dt)
+    plotCreature(i, walls, locations, velocities, numberOfTimesteps, dt, dirName)
