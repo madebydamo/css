@@ -6,7 +6,7 @@ from deap import creator, base, tools, algorithms
 from scoop import futures
 import numpy as np
 
-from models import simple as simulationcase
+from models import fov as simulationcase
 import simulation
 
 # run with python -m scoop train.py
@@ -24,7 +24,7 @@ toolbox = base.Toolbox()
 toolbox.register("map", futures.map)
 
 if __name__ == '__main__':
-    toolbox.register("attr_param", random.uniform, 0.01, 2.)
+    toolbox.register("attr_param", random.uniform, 0.01, 30.)
     toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_param, n=simulationcase.paramnr)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     params = []
     fitness = []
 
-    NGEN = 100
+    NGEN = 50
     print("start training")
     dirName = f'./tmp/evol{time.time()}'
     for gen in range(NGEN):
