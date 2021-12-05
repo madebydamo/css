@@ -2,7 +2,6 @@ import math
 import numpy as np
 from numpy.linalg import norm
 
-import simple
 from models.shared import agentDistanceForceAB, agentObjectForce, accelerationForce
 
 """
@@ -20,15 +19,15 @@ def limitForce(creatureA, force, phi, w):
 
 
 def socialForce(creatureA,creatures, objects, dt):
-    return (simple.accelerationForce(creatureA)
+    return (accelerationForce(creatureA)
             + agentDistanceForceWithFOV(creatureA,creatures,dt)
             + agentObjectForce(creatureA, objects,dt))
 
 
 def socialForceWithParams(creatureA,creatures, objects, dt, params):
-    return (simple.accelerationForce(creatureA, tau=params[2])
+    return (accelerationForce(creatureA, tau=params[2])
             + agentDistanceForceWithFOV(creatureA,creatures,dt, A=params[0], B=params[1], phi=params[3], w=params[4])
-            + simple.agentObjectForce(creatureA, objects,dt))
+            + agentObjectForce(creatureA, objects,dt))
 
 
 def agentDistanceForce(creatureA, creatures, dt, A=2.1 ,B=0.3):

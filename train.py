@@ -11,14 +11,15 @@ import simulation
 
 # run with python -m scoop train.py
 
+# evaluates fitness of given params
 def evalData(params):
     def socialForce(creatureA,creatures,objects,dt):
         return simulationcase.socialForceWithParams(creatureA, creatures, objects, dt, params)
     return simulation.simulate(socialForce, None, 1.0/30, 10, False)
 
+# setup of DEAP
 creator.create("FitnessMax", base.Fitness, weights=(100.0, -1.0))
 creator.create("Individual", list, fitness=creator.FitnessMax)
-
 toolbox = base.Toolbox()
 
 toolbox.register("map", futures.map)
@@ -30,7 +31,7 @@ if __name__ == '__main__':
 
     toolbox.register("evaluate", evalData)
     toolbox.register("mate", tools.cxTwoPoint)
-    toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
+    toolbox.register("mutate", tools.mutFlipBit, indpb=0.10)
     toolbox.register("select", tools.selTournament, tournsize=3)
 
     population = toolbox.population(n=100)
@@ -41,6 +42,7 @@ if __name__ == '__main__':
     NGEN = 50
     print("start training")
     dirName = f'./tmp/evol{time.time()}'
+    # start of training evolutions
     for gen in range(NGEN):
         offspring = algorithms.varAnd(population, toolbox, cxpb=0.5, mutpb=0.1)
         fits = toolbox.map(toolbox.evaluate, offspring)
@@ -69,8 +71,7 @@ if __name__ == '__main__':
             tools.selBest(population, k=1)[0],
             f'{dirName}/gen{gen}.npy'))
 
-
+    #save results
     np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
-
     np.save( f'{dirName}/fitness.npy', np.array(fitness))
     np.save(f'{dirName}/params.npy', np.array(params))

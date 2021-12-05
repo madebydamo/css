@@ -12,8 +12,6 @@ from scene import wall
     The world is assumed to always be starting at (0,0) and only expand in the positive x and y direction. Creatures and objects may be placed outside those bounds
     and still work as expected but won't be shown on screen.
 """
-
-
 class UI:
     # initilazes the window and sets the size of both the window and the simualted world
     def __init__(self, windowWidth, windowHeight, worldWidth, worldHeight):
@@ -27,6 +25,7 @@ class UI:
 
         self.worldWidth = worldWidth
         self.worldHeight = worldHeight
+        # sets creature radius to 0.25m
         self.creatureRadius = (windowWidth / worldWidth) / 4
 
     # converts from world to window space
@@ -37,7 +36,8 @@ class UI:
     def windowToWorld(self, x, y):
         return float(x * self.worldWidth / self.windowWidth), float((self.windowHeight - y) * self.worldHeight / self.windowHeight)
 
-    def drawWindowFromArray(self, creatureArray, objectArray):
+    # draws creatures and objects for one frame
+    def drawWindowFromArrays(self, creatureArray, objectArray):
         BeginDrawing()
         ClearBackground(RAYWHITE)
 
@@ -100,6 +100,7 @@ class UI:
         CloseWindow()
 
 
+# gets filepath to generated simulation file and visualises content
 def showSimulation(filepath):
     creatures = np.load(filepath, allow_pickle=True)
     ui = UI(800, 800, 10, 10)
@@ -110,7 +111,7 @@ def showSimulation(filepath):
     # print("devider----------------------")
     # print(creatures[i])
     while creatures.size > i and not WindowShouldClose():
-        ui.drawWindowFromArray(creatures[i], objects)
+        ui.drawWindowFromArrays(creatures[i], objects)
 
         i += 1
     ui.closeWindow()

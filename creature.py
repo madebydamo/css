@@ -3,42 +3,38 @@ import random
 
 """
     Implementation of a single creature for our simulation
-    The creature it self does not implement the different function for calculating forces which are given trough models
-    
+    The creature it self does not implement the different function for
+    calculating forces which are given trough models
 """
-
 
 class Creature:
     maxVelocity = 1.388888
+
     force = np.zeros(2)
     velocity = np.zeros(2)
 
     nextLocation = np.zeros(2)
     nextVelocity = np.zeros(2)
 
+    # used if creature should repeat after reaching final destination
     finished = False
     numberOfRounds = 0 # accumulates number of repetitions
 
-    #PRE: location = np.array([x,y]), goal = np.array([goalX,goalY])
-    def __init__(self, location, path, desiredVelocity=1.333, tau=0.5, repeating=False):
+    #location: start location of creature
+    #path: array of locations, creature tries to reach one after another
+    def __init__(self, location, path, repeating=False):
         self.location = location
         self.startingLocation = location
-
         # variables for path and destination
         self.currentDest = path[0]
         self.finalDest = path[-1]
         self.path = path
         self.pathIdx = 0
         self.finished = False
-
         # repeats path
         self.repeating = repeating
-
+        #dirty hack for comparing equality
         self.seed = random.randint(0, 1 << 31)
-
-        # params // shouldn't be needed here
-        self.desiredVelocity = desiredVelocity
-        self.tau = tau
 
     def __eq__(self, other):
         return self.seed == other.seed
@@ -67,10 +63,9 @@ class Creature:
     def calculateLocation(self, dt):
         self.nextLocation = self.location + self.nextVelocity*dt
 
-    """ 
-    actually now updates the location and velocity. This is done so that the ordering in which creatures are updated
-    doesn't play a role. Forces are not accessed outside of the creature they belong to so not necessary to have a nextForce 
-    """
+    # actually now updates the location and velocity. This is done so that the
+    # ordering in which creatures are updated doesn't play a role. Forces are
+    # not accessed outside of the creature they belong to so not necessary to have a nextForce 
     def updateLocation(self):
         self.velocity = self.nextVelocity
         self.location = self.nextLocation
@@ -102,9 +97,11 @@ class Creature:
     def __str__(self):
         return f"loc:{self.location}, force:{self.force}"
 
+    # used for serialization
     def asArray(self):
         return [self.location[0], self.location[1], self.force[0], self.force[1]]
 
+# normalizes a vector
 def normalize(v):
     norm = np.linalg.norm(v)
     if norm == 0:

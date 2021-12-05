@@ -40,12 +40,12 @@ def simulate(socialForce, objectForce, timestep, duration, dosave=False, filenam
             for o in objects:
                 if o.distance(c.location) < 0.25:
                     collisionRating +=1
-        # print(f"Frame {i} rendered")
-
+    # calculate distance from 
     for c in creatures:
-        destinationRating += np.linalg.norm(c.startingLocation - c.location) / np.linalg.norm(c.startingLocation - c.finalDest)
+        destinationRating += 1 - np.linalg.norm(c.finalDest - c.location) / np.linalg.norm(c.startingLocation - c.finalDest)
 
-    if(dosave):
+    # saves simulation as file to rewatch it visually
+    if dosave:
         if not os.path.exists(os.path.dirname(filename)):
             os.makedirs(os.path.dirname(filename))
         np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)                 
