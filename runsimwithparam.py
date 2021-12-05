@@ -3,7 +3,7 @@ import simulation
 
 
 def socialForce(creatureA, creatures,objects, dt):
-    return simulationcase.socialForceWithParams(creatureA, creatures, objects, dt, [9.469819000928979, 8.944300800008584, 5.236841352031811, 1, 1])
+    return simulationcase.socialForceWithParams(creatureA, creatures, objects, dt, [0.        , 0.        , 1.        , 3.50992592, 0.        ])
 
 
-simulation.simulate(socialForce, 1.0/30, 10, True)
+print(simulation.simulate(socialForce, 1.0/30, 10, True))
