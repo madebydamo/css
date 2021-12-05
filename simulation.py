@@ -4,7 +4,7 @@ import os
 
 import creature
 from scene import wall
-from scene import evacuate as scene
+from scene import evacuate as scene #selected scene. Can be {evacuate, crossing, lane, bottlekneck}
 
 
 # socialForce and objectForce are lambdas with distance as an input
@@ -40,7 +40,7 @@ def simulate(socialForce, objectForce, timestep, duration, dosave=False, filenam
             for o in objects:
                 if o.distance(c.location) < 0.25:
                     collisionRating +=1
-    # calculate distance from 
+    # calculate distance it already walked and add fitness accordingly
     for c in creatures:
         destinationRating += 1 - np.linalg.norm(c.finalDest - c.location) / np.linalg.norm(c.startingLocation - c.finalDest)
 
@@ -54,6 +54,7 @@ def simulate(socialForce, objectForce, timestep, duration, dosave=False, filenam
     return [destinationRating, collisionRating]
 
 
+# runs a simulation with the desired params set for the creature
 def simulateWithParams(socialForceWithParams, objectForce, timestep, duration, params, filename):
     def socialForce(creatureA, creatures, objects, dt):
         return socialForceWithParams(creatureA, creatures, objects, dt, params)

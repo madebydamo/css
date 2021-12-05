@@ -22,17 +22,17 @@ def objects():
 
 def creatures():
     creatures = []
-    creatures.append(creature.Creature(np.asarray([0.6, 3.6]), np.asarray([[7.7, 4.0]]), 1.333))
-    creatures.append(creature.Creature(np.asarray([0.5, 4.4]), np.asarray([[7.7, 4.0]]), 1.333))
-    creatures.append(creature.Creature(np.asarray([1.1, 4.0]), np.asarray([[7.7, 4.0]]), 1.333))
-    creatures.append(creature.Creature(np.asarray([1.3, 3.6]), np.asarray([[7.7, 4.0]]), 1.333))
-    creatures.append(creature.Creature(np.asarray([1.4, 4.4]), np.asarray([[7.7, 4.0]]), 1.333))
-    creatures.append(creature.Creature(np.asarray([1.6, 4.0]), np.asarray([[7.7, 4.0]]), 1.333))
+    creatures.append(creature.Creature(np.asarray([0.6, 3.6]), np.asarray([[7.7, 4.0]])))
+    creatures.append(creature.Creature(np.asarray([0.5, 4.4]), np.asarray([[7.7, 4.0]])))
+    creatures.append(creature.Creature(np.asarray([1.1, 4.0]), np.asarray([[7.7, 4.0]])))
+    creatures.append(creature.Creature(np.asarray([1.3, 3.6]), np.asarray([[7.7, 4.0]])))
+    creatures.append(creature.Creature(np.asarray([1.4, 4.4]), np.asarray([[7.7, 4.0]])))
+    creatures.append(creature.Creature(np.asarray([1.6, 4.0]), np.asarray([[7.7, 4.0]])))
 
-    creatures.append(creature.Creature(np.asarray([3.6, 0.5]), np.asarray([[4.0, 7.7]]), 1.333))
-    creatures.append(creature.Creature(np.asarray([4.4, 0.6]), np.asarray([[4.0, 7.7]]), 1.333))
-    creatures.append(creature.Creature(np.asarray([4.0, 1.0]), np.asarray([[4.0, 7.7]]), 1.333))
-    creatures.append(creature.Creature(np.asarray([3.6, 1.4]), np.asarray([[4.0, 7.7]]), 1.333))
-    creatures.append(creature.Creature(np.asarray([4.4, 1.3]), np.asarray([[4.0, 7.7]]), 1.333))
-    creatures.append(creature.Creature(np.asarray([4.0, 1.7]), np.asarray([[4.0, 7.7]]), 1.333))
+    creatures.append(creature.Creature(np.asarray([3.6, 0.5]), np.asarray([[4.0, 7.7]])))
+    creatures.append(creature.Creature(np.asarray([4.4, 0.6]), np.asarray([[4.0, 7.7]])))
+    creatures.append(creature.Creature(np.asarray([4.0, 1.0]), np.asarray([[4.0, 7.7]])))
+    creatures.append(creature.Creature(np.asarray([3.6, 1.4]), np.asarray([[4.0, 7.7]])))
+    creatures.append(creature.Creature(np.asarray([4.4, 1.3]), np.asarray([[4.0, 7.7]])))
+    creatures.append(creature.Creature(np.asarray([4.0, 1.7]), np.asarray([[4.0, 7.7]])))
     return creatures
