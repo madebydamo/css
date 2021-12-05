@@ -18,7 +18,7 @@ def evalData(params):
     return simulation.simulate(socialForce, 1.0/30, 10, False)
 
 # setup of DEAP
-creator.create("FitnessMax", base.Fitness, weights=(100.0, -1.0))
+creator.create("FitnessMax", base.Fitness, weights=(1.0, -1.0))
 creator.create("Individual", list, fitness=creator.FitnessMax)
 toolbox = base.Toolbox()
 
